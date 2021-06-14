@@ -2,9 +2,9 @@ package com.example.demo.DTO;
 
 public class Hours {
 	
-	long hours;
+	float hours;
 	
-	public long getHours() {
+	public float getHours() {
 		return this.hours;
 	}
 }

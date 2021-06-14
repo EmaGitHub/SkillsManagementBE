@@ -2,9 +2,9 @@ package com.example.demo.DTO;
 
 public class Salary {
 
-	long salary;
+	float salary;
 	
-	public long getSalary() {
+	public float getSalary() {
 		return this.salary;
 	}
 }

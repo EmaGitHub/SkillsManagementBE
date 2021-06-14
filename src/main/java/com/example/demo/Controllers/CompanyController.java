@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,9 +55,14 @@ public class CompanyController {
 	}
 	
 	@PostMapping(path="/promote")
-	public void applyPromotionToEmployee(@RequestParam("employeeId") int id, @RequestParam("money") long money, @RequestParam("position") short position) throws ClassNotFoundException, SQLException {
+	public void applyPromotionToEmployee(@RequestParam("employeeId") int id, @RequestParam("money") float money, @RequestParam("position") short position) throws ClassNotFoundException, SQLException {
 		this.companyService.applyPromotionToEmployee(id, money, position);
 		
+	}
+	
+	@RequestMapping(path="/changePosition", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void changeEmployeePosition(@RequestParam("id") int id, @RequestParam("position") short position) throws ClassNotFoundException, SQLException {
+		this.companyService.changeEmployeePosition(id, position);
 	}
 
 	public static void main(String[] args) {

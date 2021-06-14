@@ -95,13 +95,15 @@ public class EmployeeDAO {
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
 			
+			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
+			
 			employeesInfo += "\n"+emp.getInfo();
 		}
 		conn.close();
 		return employeesInfo;
 	}
 	
-	public void applySalaryToEmployee(int id, long baseSalary) throws SQLException, ClassNotFoundException {
+	public void applySalaryToEmployee(int id, float baseSalary) throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
@@ -111,7 +113,7 @@ public class EmployeeDAO {
 		conn.close();
 	}
 	
-	public void applyWorkHourToEmployee(int id, long maxWorkHours) throws SQLException, ClassNotFoundException {
+	public void applyWorkHourToEmployee(int id, float maxWorkHours) throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
@@ -130,7 +132,7 @@ public class EmployeeDAO {
 				+ "VALUES ("
 				+ ""+employeeId+", "
 				+ ""+position+", "
-				+ ""+money); 
+				+ ""+money+")"); 
 		conn.close();
 	}
 	
@@ -186,6 +188,80 @@ public class EmployeeDAO {
 		}
 		else 
 			logger.error("Position not found");
+	}
+	
+	public float getFinalSalary(int id) throws SQLException, ClassNotFoundException {
+
+		long promotionEarnings = 0;
+		
+		float baseSalary = 0;
+		float extraHours = 0;
+		float workHours = 0;
+		
+		Class.forName("com.mysql.jdbc.Driver");
+    	conn = DriverManager.getConnection(this.connString);
+    	
+		Statement st = this.conn.createStatement();
+		ResultSet rs;
+		rs = st.executeQuery("SELECT BASE_SALARY FROM EMPLOYEE "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			baseSalary = rs.getFloat(1);
+		}
+		
+		rs = st.executeQuery("SELECT EXTRA_HOURS FROM EMPLOYEE "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			extraHours += rs.getFloat(1);
+		}
+		
+		rs = st.executeQuery("SELECT WORK_HOURS FROM EMPLOYEE "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			workHours += rs.getFloat(1);
+		}
+		
+		rs = st.executeQuery("SELECT * FROM PROMOTION "
+				+ "WHERE EMPLOYEE_ID = "+id); 
+		while (rs.next()) {
+			promotionEarnings += rs.getFloat("money");	// promotion number * position
+		}
+		float y = (float) ((baseSalary / 30 * workHours) * 1.7);
+			
+		conn.close();
+		return (baseSalary + promotionEarnings + extraHours * y);
+	}
+	
+	public void changeEmployeePosition(int id, short position) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+    	conn = DriverManager.getConnection(this.connString);
+    	ResultSet rs;
+    	
+    	int promotionNumber = 0;
+    	float baseSalary = 0;
+    	
+		Statement st = this.conn.createStatement();
+		st.executeUpdate("UPDATE EMPLOYEE SET "
+				+ "PRINCIPAL_POSITION = "+position+" "
+				+ "WHERE ID = "+id);
+		
+		rs = st.executeQuery("SELECT count(*) FROM PROMOTION "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			promotionNumber += rs.getInt(1);
+		}
+		
+		rs = st.executeQuery("SELECT BASE_SALARY FROM EMPLOYEE "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			baseSalary += rs.getFloat(1);
+		}
+		
+		float newSalary;
+		newSalary = baseSalary + promotionNumber * position;
+		st.executeUpdate("UPDATE EMPLOYEE "
+				+ "SET BASE_SALARY = "+newSalary+" "
+				+ "where ID = "+id);
 	}
 	
 	public ArrayList<Short> convertStringPositionToList(String positionAsString) {

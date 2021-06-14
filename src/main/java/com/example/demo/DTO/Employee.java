@@ -11,11 +11,17 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.Services.CompanyService;
 
 @Table
 public class Employee {
 	
     private final Logger logger = Logger.getLogger(this.getClass());
+    
+    @Autowired
+    private CompanyService companyService;
 	
 	@Id
 	private int id;
@@ -27,11 +33,13 @@ public class Employee {
 	private ArrayList<Short> position;
 	
     @Column(name = "base_salary")
-	private long baseSalary;
+	private float baseSalary;
     @Column(name = "work_hours")
-	private long maxWorkHours;
+	private float maxWorkHours;
     @Column(name = "extra_hours")
-	private long extraHours;
+	private float extraHours;
+    
+    private float finalSalary;
 		
 	public Employee(int id, String name, String lastName) {
 		this.id = id;
@@ -57,6 +65,10 @@ public class Employee {
 		this.extraHours = extra;
 	}
 	
+	public int getId() {
+		return this.id;
+	}
+	
 	public void addPosition(short position) {
 		if (this.position.indexOf(position) < 0)
 			this.position.add(position);
@@ -73,32 +85,11 @@ public class Employee {
 	
 	public String getInfo() throws ClassNotFoundException, SQLException {
 		 //logger.info("Employee "+this.name+" "+this.lastName+" works for "+this.maxWorkHours+" for a salary of "+this.baseSalary);
-		return "Employee "+this.name+" "+this.lastName+" with id: "+this.id+" works for "+this.maxWorkHours+" hours and has a salary of "+this.getFinalSalary();
+		return "Employee "+this.name+" "+this.lastName+" with id: "+this.id+" works for "+this.maxWorkHours+" hours and has a salary of "+this.finalSalary;
 	}
 	
-	public long getFinalSalary() throws SQLException, ClassNotFoundException {
-
-		long promotionEarnings = 0;
-		
-		Class.forName ("org.h2.Driver");
-		Connection conn = DriverManager.getConnection ("jdbc:h2:~/test", "sa",""); 
-		
-		Statement st = conn.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT FROM EMPLOYEE "
-				+ "WHERE ID = "+this.id); 
-		while (rs.next()) {
-			this.baseSalary = rs.getLong(1);
-		}
-		
-		rs = st.executeQuery("SELECT * FROM PROMOTIONS "
-				+ "WHERE EMPLOYEE_ID = "+this.id); 
-		while (rs.next()) {
-			promotionEarnings += rs.getFloat("money") * rs.getInt("position");	// promotion number * position
-		}
-		long y = (long) ((this.baseSalary / 30 * 8) * 1.7);
-			
-		conn.close();
-		return this.baseSalary + promotionEarnings + this.extraHours * y;
+	public void setFinalSalary(float salary) {
+		this.finalSalary = salary;
 	}
 	
 	public ArrayList<Short> convertStringPositionToList(String positionString) {

@@ -41,15 +41,15 @@ public class CompanyService {
 		this.employeeDao.dismissEmployee(id);
 	}
 	
-	public void applyPromotionToEmployee(int employeeId, long money, short position) throws SQLException, ClassNotFoundException {
+	public void applyPromotionToEmployee(int employeeId, float money, short position) throws SQLException, ClassNotFoundException {
 		this.employeeDao.applyPromotionToEmployee(employeeId, money, position);
 	}
 	
-	public void applySalaryToEmployee(int id, long baseSalary) throws SQLException, ClassNotFoundException {
+	public void applySalaryToEmployee(int id, float baseSalary) throws SQLException, ClassNotFoundException {
 		this.employeeDao.applySalaryToEmployee(id, baseSalary);
 	}
 	
-	public void applyWorkHourToEmployee(int id, long maxWorkHours) throws SQLException, ClassNotFoundException {
+	public void applyWorkHourToEmployee(int id, float maxWorkHours) throws SQLException, ClassNotFoundException {
 		this.employeeDao.applyWorkHourToEmployee(id, maxWorkHours);
 	}
 	
@@ -57,8 +57,16 @@ public class CompanyService {
 		return this.employeeDao.getEmployeePositions(id);
 	}
 	
+	public float getFinalSalary(int employeeId) throws ClassNotFoundException, SQLException {
+		return this.employeeDao.getFinalSalary(employeeId);
+	}
+	
 	public void addEmployeePosition(int id, short position) throws SQLException, ClassNotFoundException {
 		this.employeeDao.addEmployeePosition(id, position);
+	}
+	
+	public void changeEmployeePosition(int id, short position) throws ClassNotFoundException, SQLException {
+		this.employeeDao.changeEmployeePosition(id, position);
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
