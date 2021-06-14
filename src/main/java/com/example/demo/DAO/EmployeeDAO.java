@@ -91,7 +91,7 @@ public class EmployeeDAO {
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
 			
-			String positions = rs.getString("position");
+			String positions = rs.getString("positions");
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
 			
@@ -172,7 +172,7 @@ public class EmployeeDAO {
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT POSITION FROM EMPLOYEE "
+		ResultSet rs = st.executeQuery("SELECT POSITIONS FROM EMPLOYEE "
 				+ "WHERE ID = "+id); 
 		
 		String positionAsString = "";
@@ -182,12 +182,12 @@ public class EmployeeDAO {
 			positionAsString += ","+position;
 
 			int rs2 = st.executeUpdate("UPDATE EMPLOYEE "
-					+ "SET POSITION = " + positionAsString
+					+ "SET POSITIONS = '" + positionAsString + "'"
 					+ "WHERE ID = "+id); 
 			conn.close();
 		}
 		else 
-			logger.error("Position not found");
+			logger.error("Positions not found");
 	}
 	
 	public float getFinalSalary(int id) throws SQLException, ClassNotFoundException {
@@ -246,7 +246,7 @@ public class EmployeeDAO {
 				+ "WHERE ID = "+id);
 		
 		rs = st.executeQuery("SELECT count(*) FROM PROMOTION "
-				+ "WHERE ID = "+id); 
+				+ "WHERE EMPLOYEE_ID = "+id); 
 		while (rs.next()) {
 			promotionNumber += rs.getInt(1);
 		}

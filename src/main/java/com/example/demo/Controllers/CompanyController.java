@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.Hours;
+import com.example.demo.DTO.Position;
 import com.example.demo.DTO.Salary;
 import com.example.demo.Services.CompanyService;
 
@@ -60,10 +61,20 @@ public class CompanyController {
 		
 	}
 	
-	@RequestMapping(path="/changePosition", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void changeEmployeePosition(@RequestParam("id") int id, @RequestParam("position") short position) throws ClassNotFoundException, SQLException {
-		this.companyService.changeEmployeePosition(id, position);
+	@RequestMapping(path="/addposition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void addPosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
+		this.companyService.addEmployeePosition(id, position.getPosition());
 	}
+	
+	@RequestMapping(path="/changeposition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void changeEmployeePosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
+		this.companyService.changeEmployeePosition(id, position.getPosition());
+	}
+	
+	@GetMapping(value="/employeetotalsalary/{id}")
+    public String getTotalSalary(@PathVariable("id") int id) throws ClassNotFoundException, SQLException {
+		return "Total Salary: "+this.companyService.getTotalSalary(id);
+    }
 
 	public static void main(String[] args) {
 

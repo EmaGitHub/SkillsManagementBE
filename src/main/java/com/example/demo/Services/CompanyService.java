@@ -69,6 +69,10 @@ public class CompanyService {
 		this.employeeDao.changeEmployeePosition(id, position);
 	}
 	
+	public float getTotalSalary(int id) throws ClassNotFoundException, SQLException {
+		return this.employeeDao.getFinalSalary(id);
+	}
+	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
 	}
