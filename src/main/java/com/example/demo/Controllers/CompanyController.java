@@ -36,7 +36,7 @@ public class CompanyController {
 		return "Test string";
     }
 		
-	@GetMapping(value="/getAllEmployeesInfo", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(value="/employees", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllEmployeesInfo() throws ClassNotFoundException, SQLException, JsonProcessingException {
 		
 		ArrayList<EmployeeDTO> list = this.companyService.getAllEmployeesInfo();
@@ -50,7 +50,7 @@ public class CompanyController {
 		return empJson;
     }
 	
-	@GetMapping(value="/getEmployeeById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/employee/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getEmployeeById(@PathVariable int id) throws ClassNotFoundException, SQLException, JsonProcessingException {
 				
 		EmployeeDTO e = this.companyService.getEmployeeById(id);
@@ -66,9 +66,9 @@ public class CompanyController {
 		return empJson;
     }
 	
-	@PostMapping(path = "/hire")  // consumes = "application/json", produces = "application/json")
-	public void hireEmployee(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("lastName") String lastName, @RequestParam("position") int position, @RequestParam("basesalary") float base_salary) throws ClassNotFoundException, SQLException {
-		this.companyService.hireEmployee(id, name, lastName, position, base_salary);
+	@PostMapping(path = "/hire", consumes = "application/json", produces = "application/json")
+	public void hireEmployee(@RequestBody EmployeeDTO employee) throws ClassNotFoundException, SQLException {
+		this.companyService.hireEmployee(employee);
 	}
 	
 	@RequestMapping(value = "/setWorkHours/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)

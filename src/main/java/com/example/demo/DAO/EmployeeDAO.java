@@ -25,21 +25,22 @@ public class EmployeeDAO {
     public EmployeeDAO() throws SQLException {
     	}
 	
-	public void hireEmployee(int id, String name, String lastName, int position, float base_salary) throws SQLException, ClassNotFoundException {
+	public void hireEmployee(int id, String name, String lastName, ArrayList<Short> positions, float baseSalary) throws SQLException, ClassNotFoundException {
 		
 		EmployeeDTO newEmp = new EmployeeDTO(id, name, lastName);
 		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
-		st.execute("INSERT INTO EMPLOYEE "
-				+ "(ID, NAME, LAST_NAME, POSITION, BASE_SALARY) "
+		String query = "INSERT INTO EMPLOYEE "
+				+ "(ID, NAME, LAST_NAME, POSITIONS, BASE_SALARY) "
 				+ "VALUES ("
 				+ ""+id+", "
 				+ "'"+name+"', "
 				+ "'"+lastName+"', "
-				+ ""+position+", "
-						+ ""+base_salary+");"); 
+				+ "'"+this.convertPositionListToString(positions)+"', "
+				+ ""+baseSalary+")";
+		st.execute(query); 
 		conn.close();
 	}
 	
@@ -115,7 +116,6 @@ public class EmployeeDAO {
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
-			
 			String positions = rs.getString("positions");
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
@@ -288,13 +288,24 @@ public class EmployeeDAO {
 	
 	public ArrayList<Short> convertStringPositionToList(String positionAsString) {
 		ArrayList<Short> list = new ArrayList<Short>();
-		String[] arr = positionAsString.split(",");
-		if (arr != null)
-			for (String s: arr)
-				list.add(Short.valueOf(s));
+		if (positionAsString != null && !positionAsString.equals("")) {
+			String[] arr = positionAsString.split(",");
+			if (arr != null)
+				for (String s: arr)
+					list.add(Short.valueOf(s));
+			else
+				list.add(Short.valueOf(positionAsString));
+		}
 		else
-			list.add(Short.valueOf(positionAsString));
+			list.add((short) 0);
 		return list;
+	}
+	
+	public String convertPositionListToString(ArrayList<Short> positionList) {
+		String positions = "";
+		for (Short pos: positionList) 
+			positions.concat(pos.toString()).concat(",");
+		return positions.substring(0, positions.length() > 0 ? positions.length()-1 : 0);
 	}
 	
 }

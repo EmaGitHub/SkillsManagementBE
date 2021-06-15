@@ -24,6 +24,7 @@ public class EmployeeDTO {
     private CompanyService companyService;
 	
 	@Id
+	@Column(name = "id")
 	private int id;
     @Column(name = "name")
 	private String name;
@@ -46,7 +47,6 @@ public class EmployeeDTO {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
-		
 		this.positions = new ArrayList<Short>();
 	}
 	
@@ -58,10 +58,10 @@ public class EmployeeDTO {
 		return lastName;
 	}
 
-	public ArrayList<Short> getPosition() {
+	public ArrayList<Short> getPositions() {
 		return positions;
 	}
-
+	
 	public float getBaseSalary() {
 		return baseSalary;
 	}
