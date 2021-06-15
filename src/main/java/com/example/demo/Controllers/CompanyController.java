@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.EmployeeDTO;
 import com.example.demo.DTO.Hours;
 import com.example.demo.DTO.Position;
 import com.example.demo.DTO.Salary;
 import com.example.demo.Services.CompanyService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @RestController
+@RequestMapping("api")
 public class CompanyController {
 
 	@Autowired
@@ -29,10 +35,35 @@ public class CompanyController {
     public String getTestData() {		
 		return "Test string";
     }
-	
+		
 	@GetMapping(value="/getAllEmployeesInfo", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getAllEmployeesInfo() throws ClassNotFoundException, SQLException {
-		return this.companyService.getAllEmployeesInfo();
+    public String getAllEmployeesInfo() throws ClassNotFoundException, SQLException, JsonProcessingException {
+		
+		ArrayList<EmployeeDTO> list = this.companyService.getAllEmployeesInfo();
+		// Create ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Convert object to JSON string
+        String empJson = mapper.writeValueAsString(list);
+        System.out.println(empJson);
+		return empJson;
+    }
+	
+	@GetMapping(value="/getEmployeeById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getEmployeeById(@PathVariable int id) throws ClassNotFoundException, SQLException, JsonProcessingException {
+				
+		EmployeeDTO e = this.companyService.getEmployeeById(id);
+		
+		// Create ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Convert object to JSON string
+        String empJson = mapper.writeValueAsString(e);
+        System.out.println(empJson);
+
+		return empJson;
     }
 	
 	@PostMapping(path = "/hire")  // consumes = "application/json", produces = "application/json")
@@ -40,12 +71,12 @@ public class CompanyController {
 		this.companyService.hireEmployee(id, name, lastName, position, base_salary);
 	}
 	
-	@RequestMapping(value = "/setworkhours/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/setWorkHours/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void setWorkHours(@PathVariable(value = "id") int id, @RequestBody Hours hours) throws ClassNotFoundException, SQLException {
 		this.companyService.applyWorkHourToEmployee(id, hours.getHours());
 	}
 	
-	@RequestMapping(value = "/setsalary/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/setSalary/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void setSalary(@PathVariable(value = "id") int id, @RequestBody Salary salary) throws ClassNotFoundException, SQLException {
 		this.companyService.applySalaryToEmployee(id, salary.getSalary());
 	}
@@ -61,17 +92,17 @@ public class CompanyController {
 		
 	}
 	
-	@RequestMapping(path="/addposition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path="/addPosition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void addPosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
 		this.companyService.addEmployeePosition(id, position.getPosition());
 	}
 	
-	@RequestMapping(path="/changeposition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path="/changePosition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void changeEmployeePosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
 		this.companyService.changeEmployeePosition(id, position.getPosition());
 	}
 	
-	@GetMapping(value="/employeetotalsalary/{id}")
+	@GetMapping(value="/employeeTotalSalary/{id}")
     public String getTotalSalary(@PathVariable("id") int id) throws ClassNotFoundException, SQLException {
 		return "Total Salary: "+this.companyService.getTotalSalary(id);
     }

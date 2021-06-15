@@ -5,22 +5,23 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DAO.EmployeeDAO;
-import com.example.demo.DTO.Employee;
+import com.example.demo.DTO.EmployeeDTO;
 
 @Service
 public class CompanyService {
 	
-	private ArrayList<Employee> employees;
+	private ArrayList<EmployeeDTO> employees;
     private final Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	private EmployeeDAO employeeDao;
 	
 	public CompanyService () {
-		this.employees = new ArrayList<Employee>();
+		this.employees = new ArrayList<EmployeeDTO>();
 	}
 	
 	public void getAllEmployees() throws SQLException, ClassNotFoundException {
@@ -28,9 +29,17 @@ public class CompanyService {
 		this.employees = this.employeeDao.getAllEmployees();
 	}
 	
-	public String getAllEmployeesInfo() throws SQLException, ClassNotFoundException {
-	    logger.info("Print employees' info");
+	public ArrayList<EmployeeDTO> getAllEmployeesInfo() throws SQLException, ClassNotFoundException {
+	    logger.info("Print all employees' info");
 		return this.employeeDao.getAllEmployeesInfo();
+	}
+	
+	public EmployeeDTO getEmployeeById(int id) throws ClassNotFoundException, SQLException {
+	    logger.info("Print employees' info");
+	    EmployeeDTO e = this.employeeDao.getEmployeeInfo(id);
+        if (e == null)
+        	logger.error("Employee with id "+id+" not found");
+	    return e;
 	}
 	
 	public void hireEmployee(int id, String name, String lastName, int position, float baseSalary) throws SQLException, ClassNotFoundException {

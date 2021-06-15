@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 @Table
-public class Promotion {
+public class PromotionDTO {
 
     @Column(name = "employee_id")	
 	private int employeeId;	

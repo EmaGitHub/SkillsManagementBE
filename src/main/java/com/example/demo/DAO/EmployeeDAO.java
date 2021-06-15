@@ -8,9 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.DTO.Employee;
+import com.example.demo.DTO.EmployeeDTO;
 
 @Repository
 public class EmployeeDAO {
@@ -25,7 +27,7 @@ public class EmployeeDAO {
 	
 	public void hireEmployee(int id, String name, String lastName, int position, float base_salary) throws SQLException, ClassNotFoundException {
 		
-		Employee newEmp = new Employee(id, name, lastName);
+		EmployeeDTO newEmp = new EmployeeDTO(id, name, lastName);
 		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
@@ -50,9 +52,9 @@ public class EmployeeDAO {
 		conn.close();
 	}
 	
-	public ArrayList<Employee> getAllEmployees()  throws SQLException, ClassNotFoundException {
+	public ArrayList<EmployeeDTO> getAllEmployees()  throws SQLException, ClassNotFoundException {
 		
-		ArrayList<Employee> employees = new ArrayList<Employee>();
+		ArrayList<EmployeeDTO> employees = new ArrayList<EmployeeDTO>();
 		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
@@ -60,7 +62,7 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
 		
 		while (rs.next()) {
-			Employee emp = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			EmployeeDTO emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
@@ -76,9 +78,9 @@ public class EmployeeDAO {
 		return employees;
 	}
 	
-	public String getAllEmployeesInfo()  throws SQLException, ClassNotFoundException {	
+	public ArrayList<EmployeeDTO> getAllEmployeesInfo()  throws SQLException, ClassNotFoundException {	
 		
-		String employeesInfo = "";
+		ArrayList<EmployeeDTO> employeesList = new ArrayList<EmployeeDTO>();
 		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
@@ -86,7 +88,30 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
 		
 		while (rs.next()) {
-			Employee emp = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			EmployeeDTO emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			emp.setMaxWorkHours(rs.getLong("work_hours"));
+			emp.setBaseSalary(rs.getLong("base_salary"));
+			emp.setExtraHours(rs.getLong("extra_hours"));
+			String positions = rs.getString("positions");
+			ArrayList<Short> posList = convertStringPositionToList(positions);
+			emp.setPositions(posList);
+			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
+			
+			employeesList.add(emp);
+		}
+		conn.close();
+		return employeesList;
+	}
+	
+	public EmployeeDTO getEmployeeInfo(int id) throws SQLException, ClassNotFoundException {
+		EmployeeDTO emp = null;
+		Class.forName("com.mysql.jdbc.Driver");
+    	conn = DriverManager.getConnection(this.connString);
+		Statement st = this.conn.createStatement(); 
+		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE "
+				+ "WHERE ID = "+id); 
+		while (rs.next()) {
+			emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
@@ -94,13 +119,10 @@ public class EmployeeDAO {
 			String positions = rs.getString("positions");
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
-			
 			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
-			
-			employeesInfo += "\n"+emp.getInfo();
 		}
-		conn.close();
-		return employeesInfo;
+		
+		return emp;
 	}
 	
 	public void applySalaryToEmployee(int id, float baseSalary) throws SQLException, ClassNotFoundException {

@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.Services.CompanyService;
 
 @Table
-public class Employee {
+public class EmployeeDTO {
 	
     private final Logger logger = Logger.getLogger(this.getClass());
     
@@ -30,10 +30,11 @@ public class Employee {
     @Column(name = "last_name")
 	private String lastName;
 	
-	private ArrayList<Short> position;
+	private ArrayList<Short> positions;
 	
     @Column(name = "base_salary")
 	private float baseSalary;
+    
     @Column(name = "work_hours")
 	private float maxWorkHours;
     @Column(name = "extra_hours")
@@ -41,12 +42,40 @@ public class Employee {
     
     private float finalSalary;
 		
-	public Employee(int id, String name, String lastName) {
+	public EmployeeDTO(int id, String name, String lastName) {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		
-		this.position = new ArrayList<Short>();
+		this.positions = new ArrayList<Short>();
+	}
+	
+    public String getName() {
+		return name;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public ArrayList<Short> getPosition() {
+		return positions;
+	}
+
+	public float getBaseSalary() {
+		return baseSalary;
+	}
+
+	public float getMaxWorkHours() {
+		return maxWorkHours;
+	}
+
+	public float getExtraHours() {
+		return extraHours;
+	}
+
+	public float getFinalSalary() {
+		return finalSalary;
 	}
 	
 	public void setBaseSalary(long f) {
@@ -70,17 +99,17 @@ public class Employee {
 	}
 	
 	public void addPosition(short position) {
-		if (this.position.indexOf(position) < 0)
-			this.position.add(position);
+		if (this.positions.indexOf(position) < 0)
+			this.positions.add(position);
 	}
 	
 	public void setPositions(ArrayList<Short> positions) {
-		this.position = positions;
+		this.positions = positions;
 	}
 	
 	public void removePosition(short position) {
-		if (this.position.indexOf(position) >= 0)
-			this.position.remove(this.position.indexOf(position));
+		if (this.positions.indexOf(position) >= 0)
+			this.positions.remove(this.positions.indexOf(position));
 	}
 	
 	public String getInfo() throws ClassNotFoundException, SQLException {
