@@ -1,6 +1,6 @@
 package com.example.demo.DTO;
 
-public class Salary {
+public class SalaryDTO {
 
 	float salary;
 	

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.EmployeeDTO;
-import com.example.demo.DTO.Hours;
-import com.example.demo.DTO.Position;
-import com.example.demo.DTO.Salary;
+import com.example.demo.DTO.HoursDTO;
+import com.example.demo.DTO.PositionDTO;
+import com.example.demo.DTO.SalaryDTO;
 import com.example.demo.Services.CompanyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,12 +72,12 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/setWorkHours/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void setWorkHours(@PathVariable(value = "id") int id, @RequestBody Hours hours) throws ClassNotFoundException, SQLException {
+	public void setWorkHours(@PathVariable(value = "id") int id, @RequestBody HoursDTO hours) throws ClassNotFoundException, SQLException {
 		this.companyService.applyWorkHourToEmployee(id, hours.getHours());
 	}
 	
 	@RequestMapping(value = "/setSalary/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void setSalary(@PathVariable(value = "id") int id, @RequestBody Salary salary) throws ClassNotFoundException, SQLException {
+	public void setSalary(@PathVariable(value = "id") int id, @RequestBody SalaryDTO salary) throws ClassNotFoundException, SQLException {
 		this.companyService.applySalaryToEmployee(id, salary.getSalary());
 	}
 	
@@ -93,12 +93,12 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(path="/addPosition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void addPosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
+	public void addPosition(@PathVariable("id") int id, @RequestBody PositionDTO position) throws ClassNotFoundException, SQLException {
 		this.companyService.addEmployeePosition(id, position.getPosition());
 	}
 	
 	@RequestMapping(path="/changePosition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void changeEmployeePosition(@PathVariable("id") int id, @RequestBody Position position) throws ClassNotFoundException, SQLException {
+	public void changeEmployeePosition(@PathVariable("id") int id, @RequestBody PositionDTO position) throws ClassNotFoundException, SQLException {
 		this.companyService.changeEmployeePosition(id, position.getPosition());
 	}
 	

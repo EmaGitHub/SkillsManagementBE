@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.Services.CompanyService;
 
-@Table
+@Entity
 public class EmployeeDTO {
 	
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -23,24 +24,13 @@ public class EmployeeDTO {
     @Autowired
     private CompanyService companyService;
 	
-	@Id
-	@Column(name = "id")
 	private int id;
-    @Column(name = "name")
 	private String name;
-    @Column(name = "last_name")
 	private String lastName;
-	
 	private ArrayList<Short> positions;
-	
-    @Column(name = "base_salary")
 	private float baseSalary;
-    
-    @Column(name = "work_hours")
 	private float maxWorkHours;
-    @Column(name = "extra_hours")
 	private float extraHours;
-    
     private float finalSalary;
 		
 	public EmployeeDTO(int id, String name, String lastName) {

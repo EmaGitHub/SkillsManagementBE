@@ -1,6 +1,6 @@
 package com.example.demo.DTO;
 
-public class Position {
+public class PositionDTO {
 	
 	short position;
 	

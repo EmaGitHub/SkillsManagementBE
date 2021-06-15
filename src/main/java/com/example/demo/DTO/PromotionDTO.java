@@ -1,15 +1,13 @@
 package com.example.demo.DTO;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Table
+@Entity
 public class PromotionDTO {
 
-    @Column(name = "employee_id")	
 	private int employeeId;	
-    @Column(name = "position")	
 	private short position;
-    @Column(name = "money")	
 	private float money;
 }

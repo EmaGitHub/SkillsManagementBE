@@ -1,6 +1,6 @@
 package com.example.demo.DTO;
 
-public class Hours {
+public class HoursDTO {
 	
 	float hours;
 	
