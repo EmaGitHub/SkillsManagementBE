@@ -115,16 +115,16 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
-			emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name") != null ? rs.getString("name") : "", rs.getString("last_name") != null ? rs.getString("last_name") : "");
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
-			String positions = rs.getString("positions");
+			String positions = rs.getString("positions") != null ? rs.getString("positions") : "";
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
 			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
 		}
-		
+		conn.close();
 		return emp;
 	}
 	

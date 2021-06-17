@@ -27,14 +27,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		// disabling csrf here, you should enable it before using in production (POST)
-        .csrf().disable()
 		.authorizeRequests()
 		// white list
 		.antMatchers("/", "/index", "/css", "/js/*").permitAll()
 		// permission required
-		.antMatchers("/api/*").hasAnyRole("ADMIN")
-		.anyRequest().authenticated().and().httpBasic();
+		//.antMatchers("/api/*").hasAnyRole("ADMIN", "USER")
+		.antMatchers(HttpMethod.GET, "/api/*").hasAnyAuthority("READ")
+		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole("ADMIN")
+		.antMatchers(HttpMethod.POST).hasAnyAuthority("WRITE")
+		.anyRequest().authenticated().and().httpBasic()
+		// disabling csrf here, you should enable it before using in production (POST)
+        .and().csrf().disable();
 	}
 	
 	@Override
@@ -45,21 +48,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.username("emanuele")
 				.password(this.passwordEncoder.encode("password"))
 				.roles("ADMIN", "USER")	//ROLE_ADMIN, ROLE_USER
+				.authorities("WRITE", "READ")
 				.build();
 		
 		UserDetails user2 = User.builder()
 				.username("giuseppe")
 				.password(this.passwordEncoder.encode("password"))
 				.roles("USER")	//ROLE_USER
-				.build();
-						
-		UserDetails user3 = User.builder()
-				.username("luca")
-				.password(this.passwordEncoder.encode("password"))
-				.roles("ADMIN", "USER")	//ROLE_USER, ROLE_ADMIN
+				.authorities("READ")
 				.build();
 		
-		return new InMemoryUserDetailsManager(user, user2, user3);
+		return new InMemoryUserDetailsManager(user, user2);
 	}
 	
 	
