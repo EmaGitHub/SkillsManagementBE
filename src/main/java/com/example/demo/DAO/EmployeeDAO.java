@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.DTO.EmployeeDTO;
+import com.example.demo.DTO.PromotionDTO;
 
 @Repository
 public class EmployeeDAO {
@@ -159,20 +161,22 @@ public class EmployeeDAO {
 		conn.close();
 	}
 	
-	public ArrayList<Short> getEmployeePromotions(int id) throws SQLException, ClassNotFoundException {
+	public List<PromotionDTO> getEmployeePromotions(int id) throws SQLException, ClassNotFoundException {
+		List<PromotionDTO> list = new ArrayList();
+		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT * FROM PROMOTION "
 				+ "WHERE EMPLOYEE_ID = "+id); 
+				
+		if (rs.next()) {
+			PromotionDTO promotion = new PromotionDTO(rs.getInt("employee_id"), rs.getShort("position"), rs.getFloat("money"));
+			list.add(promotion);
+		}
 		conn.close();
 		
-		String positionAsString = "";
-		
-		if (rs.next())
-			positionAsString = rs.getString(1);
-		
-		return convertStringPositionToList(positionAsString);
+		return list;
 	}
 	
 	public ArrayList<Short> getEmployeePositions(int id) throws SQLException, ClassNotFoundException {

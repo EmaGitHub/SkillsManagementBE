@@ -2,6 +2,7 @@ package com.example.demo.Services;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DAO.EmployeeDAO;
 import com.example.demo.DTO.EmployeeDTO;
+import com.example.demo.DTO.PromotionDTO;
 
 @Service
 public class CompanyService {
@@ -80,6 +82,10 @@ public class CompanyService {
 	
 	public float getTotalSalary(int id) throws ClassNotFoundException, SQLException {
 		return this.employeeDao.getFinalSalary(id);
+	}
+	
+	public List<PromotionDTO> getPromotions(int id) throws ClassNotFoundException, SQLException {
+		return this.employeeDao.getEmployeePromotions(id);
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {

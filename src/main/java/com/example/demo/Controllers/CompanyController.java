@@ -2,6 +2,7 @@ package com.example.demo.Controllers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.DTO.EmployeeDTO;
 import com.example.demo.DTO.HoursDTO;
 import com.example.demo.DTO.PositionDTO;
+import com.example.demo.DTO.PromotionDTO;
 import com.example.demo.DTO.SalaryDTO;
 import com.example.demo.Services.CompanyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -105,6 +107,20 @@ public class CompanyController {
 	@GetMapping(value="/employeeTotalSalary/{id}")
     public String getTotalSalary(@PathVariable("id") int id) throws ClassNotFoundException, SQLException {
 		return "Total Salary: "+this.companyService.getTotalSalary(id);
+    }
+	
+	@GetMapping(value="/promotions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPromotions(@PathVariable("id") int id) throws ClassNotFoundException, SQLException, JsonProcessingException {
+		
+		List<PromotionDTO> list = this.companyService.getPromotions(id);
+		// Create ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Convert object to JSON string
+        String promJson = mapper.writeValueAsString(list);
+        System.out.println(promJson);
+		return promJson;
     }
 
 	public static void main(String[] args) {
