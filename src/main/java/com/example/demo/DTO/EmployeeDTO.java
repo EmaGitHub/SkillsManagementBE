@@ -14,22 +14,22 @@ import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.demo.Services.CompanyService;
-
 @Entity
+@Table(name = "Employee")
 public class EmployeeDTO {
-	
-    private final Logger logger = Logger.getLogger(this.getClass());
-    
-    @Autowired
-    private CompanyService companyService;
-	
+		
+    @Id
 	private int id;
+    @Column
 	private String name;
+    @Column(name="last_name")
 	private String lastName;
 	private ArrayList<Short> positions;
+	@Column(name="base_salary")
 	private float baseSalary;
+	@Column(name="work_hours")
 	private float maxWorkHours;
+	@Column(name="extra_hours")
 	private float extraHours;
     private float finalSalary;
 		
