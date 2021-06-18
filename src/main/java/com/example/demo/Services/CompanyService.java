@@ -64,6 +64,10 @@ public class CompanyService {
 		this.employeeDao.applyWorkHourToEmployee(id, maxWorkHours);
 	}
 	
+	public void applyExtraHourToEmployee(int id, float maxWorkHours) throws SQLException, ClassNotFoundException {
+		this.employeeDao.applyExtraHourToEmployee(id, maxWorkHours);
+	}
+	
 	public ArrayList<Short> getEmployeePositions(int id) throws SQLException, ClassNotFoundException {
 		return this.employeeDao.getEmployeePositions(id);
 	}

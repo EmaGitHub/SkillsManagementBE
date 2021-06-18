@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,11 +79,17 @@ public class CompanyController {
 		this.companyService.applyWorkHourToEmployee(id, hours.getHours());
 	}
 	
+	@RequestMapping(value = "/setExtraHours/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void setExtraHours(@PathVariable(value = "id") int id, @RequestBody HoursDTO hours) throws ClassNotFoundException, SQLException {
+		this.companyService.applyExtraHourToEmployee(id, hours.getHours());
+	}
+	
 	@RequestMapping(value = "/setSalary/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void setSalary(@PathVariable(value = "id") int id, @RequestBody SalaryDTO salary) throws ClassNotFoundException, SQLException {
 		this.companyService.applySalaryToEmployee(id, salary.getSalary());
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/dismiss/{id}")  // consumes = "application/json", produces = "application/json")
 	public void hireEmployee(@PathVariable int id) throws ClassNotFoundException, SQLException {
 		this.companyService.dismissEmployee(id);

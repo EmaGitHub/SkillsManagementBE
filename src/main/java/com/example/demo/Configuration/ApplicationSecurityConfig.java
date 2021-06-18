@@ -36,7 +36,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// Permission and Role required
 		.antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(ApplicationUserPermission.READ.getPermission())
-		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
+		//.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
+		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
 		.antMatchers(HttpMethod.POST).hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
 		
 		.anyRequest().authenticated().and().httpBasic()

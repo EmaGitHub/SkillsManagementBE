@@ -40,6 +40,10 @@ public class EmployeeDTO {
 		this.positions = new ArrayList<Short>();
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
     public String getName() {
 		return name;
 	}

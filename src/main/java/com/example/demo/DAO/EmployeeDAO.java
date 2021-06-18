@@ -92,6 +92,7 @@ public class EmployeeDAO {
 		
 		while (rs.next()) {
 			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
+			emp.setId(rs.getInt("id"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
@@ -143,6 +144,16 @@ public class EmployeeDAO {
 		Statement st = conn.createStatement(); 
 		st.executeUpdate("UPDATE EMPLOYEE "
 				+ "SET work_hours = "+maxWorkHours+" "
+				+ "WHERE ID = "+id); 
+		conn.close();
+	}
+	
+	public void applyExtraHourToEmployee(int id, float extraHours) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+    	conn = DriverManager.getConnection(this.connString);
+		Statement st = conn.createStatement(); 
+		st.executeUpdate("UPDATE EMPLOYEE "
+				+ "SET extra_hours = "+extraHours+" "
 				+ "WHERE ID = "+id); 
 		conn.close();
 	}
@@ -205,7 +216,9 @@ public class EmployeeDAO {
 		
 		if (rs.next()) {
 			positionAsString = rs.getString(1);
-			positionAsString += ","+position;
+			if (!positionAsString.equals(""))
+				positionAsString += ",";
+			positionAsString += position;
 
 			int rs2 = st.executeUpdate("UPDATE EMPLOYEE "
 					+ "SET POSITIONS = '" + positionAsString + "'"
