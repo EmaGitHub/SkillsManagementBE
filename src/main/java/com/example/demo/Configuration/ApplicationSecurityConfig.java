@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import com.example.demo.Security.ApplicationUserPermission;
+import com.example.demo.Security.ApplicationUserRole;
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,11 +33,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		// white list
 		.antMatchers("/", "/index", "/css", "/js/*").permitAll()
-		// permission required
-		//.antMatchers("/api/*").hasAnyRole("ADMIN", "USER")
-		.antMatchers(HttpMethod.GET, "/api/*").hasAnyAuthority("READ")
-		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole("ADMIN")
-		.antMatchers(HttpMethod.POST).hasAnyAuthority("WRITE")
+		
+		// Permission and Role required
+		.antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(ApplicationUserPermission.READ.getPermission())
+		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
+		.antMatchers(HttpMethod.POST).hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
+		
 		.anyRequest().authenticated().and().httpBasic()
 		// disabling csrf here, you should enable it before using in production (POST)
         .and().csrf().disable();
@@ -43,7 +47,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	@Bean
 	protected UserDetailsService userDetailsService() {
-		//Recupero da DB
+		//Recupero da DB ...
 		UserDetails user = User.builder()
 				.username("emanuele")
 				.password(this.passwordEncoder.encode("password"))

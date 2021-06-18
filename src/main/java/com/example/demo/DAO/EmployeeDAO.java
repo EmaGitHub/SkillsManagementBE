@@ -28,17 +28,16 @@ public class EmployeeDAO {
     public EmployeeDAO() throws SQLException {
     	}
 	
-	public void hireEmployee(int id, String name, String lastName, ArrayList<Short> positions, float baseSalary) throws SQLException, ClassNotFoundException {
+	public void hireEmployee(String name, String lastName, ArrayList<Short> positions, float baseSalary) throws SQLException, ClassNotFoundException {
 		
-		EmployeeDTO newEmp = new EmployeeDTO(id, name, lastName);
+		EmployeeDTO newEmp = new EmployeeDTO(name, lastName);
 		
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
 		String query = "INSERT INTO EMPLOYEE "
-				+ "(ID, NAME, LAST_NAME, POSITIONS, BASE_SALARY) "
+				+ "(NAME, LAST_NAME, POSITIONS, BASE_SALARY) "
 				+ "VALUES ("
-				+ ""+id+", "
 				+ "'"+name+"', "
 				+ "'"+lastName+"', "
 				+ "'"+this.convertPositionListToString(positions)+"', "
@@ -66,7 +65,7 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
 		
 		while (rs.next()) {
-			EmployeeDTO emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
@@ -92,7 +91,7 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
 		
 		while (rs.next()) {
-			EmployeeDTO emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"));
+			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
@@ -115,7 +114,7 @@ public class EmployeeDAO {
 		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
-			emp = new EmployeeDTO(rs.getInt("id"), rs.getString("name") != null ? rs.getString("name") : "", rs.getString("last_name") != null ? rs.getString("last_name") : "");
+			emp = new EmployeeDTO(rs.getString("name") != null ? rs.getString("name") : "", rs.getString("last_name") != null ? rs.getString("last_name") : "");
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));

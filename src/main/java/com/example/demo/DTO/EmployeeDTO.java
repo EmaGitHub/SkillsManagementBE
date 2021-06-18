@@ -33,7 +33,7 @@ public class EmployeeDTO {
 	private float extraHours;
     private float finalSalary;
 		
-	public EmployeeDTO(int id, String name, String lastName) {
+	public EmployeeDTO(String name, String lastName) {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;

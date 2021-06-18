@@ -45,7 +45,7 @@ public class CompanyService {
 	}
 	
 	public void hireEmployee(EmployeeDTO employee) throws SQLException, ClassNotFoundException {
-		this.employeeDao.hireEmployee(employee.getId(), employee.getName(), employee.getLastName(), employee.getPositions(), employee.getBaseSalary());
+		this.employeeDao.hireEmployee(employee.getName(), employee.getLastName(), employee.getPositions(), employee.getBaseSalary());
 	}
 	
 	public void dismissEmployee(int id) throws SQLException, ClassNotFoundException {

@@ -15,6 +15,10 @@ public enum ApplicationUserPermission {
 		this.permission = permission;
 	}
 	
+	public String getPermission() {
+		return this.permission;
+	}
+	
 	public static Set<ApplicationUserPermission> getUserPermission() {
 		return new HashSet<ApplicationUserPermission>(Arrays.asList(READ));
 	}
