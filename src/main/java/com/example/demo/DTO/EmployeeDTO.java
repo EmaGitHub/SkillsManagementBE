@@ -9,17 +9,24 @@ import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.demo.Models.BaseModel;
+
+/**
+ * classe Pojo per entità
+ * @author ecalvisi
+ *
+ */
+
 @Entity
 @Table(name = "Employee")
-public class EmployeeDTO {
+public class EmployeeDTO extends BaseModel {
 		
-    @Id
-	private int id;
     @Column
 	private String name;
     @Column(name="last_name")
@@ -34,14 +41,9 @@ public class EmployeeDTO {
     private float finalSalary;
 		
 	public EmployeeDTO(String name, String lastName) {
-		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.positions = new ArrayList<Short>();
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
     public String getName() {
@@ -86,10 +88,6 @@ public class EmployeeDTO {
 	
 	public void setExtraHours(long extra) {
 		this.extraHours = extra;
-	}
-	
-	public int getId() {
-		return this.id;
 	}
 	
 	public void addPosition(short position) {

@@ -99,7 +99,7 @@ public class EmployeeDAO {
 			String positions = rs.getString("positions");
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
-			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
+			emp.setFinalSalary(this.getFinalSalary((int)emp.getId()));
 			
 			employeesList.add(emp);
 		}
@@ -122,7 +122,7 @@ public class EmployeeDAO {
 			String positions = rs.getString("positions") != null ? rs.getString("positions") : "";
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
-			emp.setFinalSalary(this.getFinalSalary(emp.getId()));
+			emp.setFinalSalary(this.getFinalSalary((int)emp.getId()));
 		}
 		conn.close();
 		return emp;
@@ -307,9 +307,10 @@ public class EmployeeDAO {
 		ArrayList<Short> list = new ArrayList<Short>();
 		if (positionAsString != null && !positionAsString.equals("")) {
 			String[] arr = positionAsString.split(",");
-			if (arr != null)
+			if (arr != null )
 				for (String s: arr)
-					list.add(Short.valueOf(s));
+					if (!s.equals(""))
+						list.add(Short.valueOf(s));
 			else
 				list.add(Short.valueOf(positionAsString));
 		}

@@ -22,17 +22,24 @@ import com.example.demo.DTO.HoursDTO;
 import com.example.demo.DTO.PositionDTO;
 import com.example.demo.DTO.PromotionDTO;
 import com.example.demo.DTO.SalaryDTO;
+import com.example.demo.Models.BaseModel;
+import com.example.demo.Services.BaseCrudService;
 import com.example.demo.Services.CompanyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @RestController
-@RequestMapping("api")
-public class CompanyController {
+@RequestMapping("/api")
+public class CompanyController extends BaseCrudController<BaseCrudService, BaseModel, Integer> {
 
 	@Autowired
 	CompanyService companyService;
+	
+	@Autowired
+	public CompanyController(CompanyService service) {
+		super(service);
+	}
 	
 	@GetMapping(value="/test", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getTestData() {		
@@ -89,7 +96,6 @@ public class CompanyController {
 		this.companyService.applySalaryToEmployee(id, salary.getSalary());
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/dismiss/{id}")  // consumes = "application/json", produces = "application/json")
 	public void hireEmployee(@PathVariable int id) throws ClassNotFoundException, SQLException {
 		this.companyService.dismissEmployee(id);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import com.example.demo.Security.ApplicationUserRole;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final PasswordEncoder passwordEncoder;
@@ -35,9 +37,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/", "/index", "/css", "/js/*").permitAll()
 		
 		// Permission and Role required
-		.antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(ApplicationUserPermission.READ.getPermission())
-		//.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
-		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
+		.antMatchers(HttpMethod.GET, "/api/*").hasAnyAuthority(ApplicationUserPermission.READ.getPermission())
+		// NOT WORK
+		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
+		// WORK
+		//.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
 		.antMatchers(HttpMethod.POST).hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
 		
 		.anyRequest().authenticated().and().httpBasic()
@@ -52,15 +56,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		UserDetails user = User.builder()
 				.username("emanuele")
 				.password(this.passwordEncoder.encode("password"))
-				.roles("ADMIN", "USER")	//ROLE_ADMIN, ROLE_USER
-				.authorities("WRITE", "READ")
+				//.roles("ADMIN", "USER")	//ROLE_ADMIN, ROLE_USER
+				.authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
 				.build();
 		
 		UserDetails user2 = User.builder()
 				.username("giuseppe")
 				.password(this.passwordEncoder.encode("password"))
-				.roles("USER")	//ROLE_USER
-				.authorities("READ")
+				//.roles("USER")	//ROLE_USER
+				.authorities(ApplicationUserRole.USER.getGrantedAuthorities())
 				.build();
 		
 		return new InMemoryUserDetailsManager(user, user2);

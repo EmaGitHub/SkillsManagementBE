@@ -6,15 +6,17 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DAO.EmployeeDAO;
 import com.example.demo.DTO.EmployeeDTO;
 import com.example.demo.DTO.PromotionDTO;
+import com.example.demo.Models.BaseModel;
 
 @Service
-public class CompanyService {
+public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, Integer>, EmployeeDTO, Integer>{
 	
 	private ArrayList<EmployeeDTO> employees;
     private final Logger logger = Logger.getLogger(this.getClass());
