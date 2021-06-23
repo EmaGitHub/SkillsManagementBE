@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.DAO.EmployeeDAO;
 import com.example.demo.DTO.EmployeeDTO;
 import com.example.demo.DTO.PromotionDTO;
-import com.example.demo.Models.BaseModel;
+import com.example.demo.Model.BaseModel;
 
 @Service
 public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, Integer>, EmployeeDTO, Integer>{
@@ -21,11 +21,13 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 	private ArrayList<EmployeeDTO> employees;
     private final Logger logger = Logger.getLogger(this.getClass());
 	
-	@Autowired
+	//@Autowired
 	private EmployeeDAO employeeDao;
 	
-	public CompanyService () {
+	@Autowired
+	public CompanyService (EmployeeDAO employeeDAO) {
 		this.employees = new ArrayList<EmployeeDTO>();
+		this.employeeDao = employeeDAO;
 	}
 	
 	public void getAllEmployees() throws SQLException, ClassNotFoundException {

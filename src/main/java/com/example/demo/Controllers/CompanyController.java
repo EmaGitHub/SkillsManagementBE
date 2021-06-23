@@ -22,7 +22,7 @@ import com.example.demo.DTO.HoursDTO;
 import com.example.demo.DTO.PositionDTO;
 import com.example.demo.DTO.PromotionDTO;
 import com.example.demo.DTO.SalaryDTO;
-import com.example.demo.Models.BaseModel;
+import com.example.demo.Model.BaseModel;
 import com.example.demo.Services.BaseCrudService;
 import com.example.demo.Services.CompanyService;
 import com.fasterxml.jackson.core.JsonProcessingException;

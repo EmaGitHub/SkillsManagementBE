@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.demo.Models.BaseModel;
+import com.example.demo.Model.BaseModel;
 import com.example.demo.Services.BaseCrudService;
 
 public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends BaseModel, ID> implements ICrudController<MODEL, ID> {

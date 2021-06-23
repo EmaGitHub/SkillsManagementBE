@@ -15,7 +15,10 @@ import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.demo.Models.BaseModel;
+import com.example.demo.Model.BaseModel;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * classe Pojo per entità
@@ -26,7 +29,8 @@ import com.example.demo.Models.BaseModel;
 @Entity
 @Table(name = "Employee")
 public class EmployeeDTO extends BaseModel {
-		
+	
+	@Getter @Setter
     @Column
 	private String name;
     @Column(name="last_name")
@@ -44,10 +48,6 @@ public class EmployeeDTO extends BaseModel {
 		this.name = name;
 		this.lastName = lastName;
 		this.positions = new ArrayList<Short>();
-	}
-	
-    public String getName() {
-		return name;
 	}
 
 	public String getLastName() {
