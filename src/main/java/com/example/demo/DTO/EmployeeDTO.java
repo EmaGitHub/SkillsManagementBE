@@ -126,4 +126,8 @@ public class EmployeeDTO extends BaseModel {
 		System.out.println("TEST");
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
 }
