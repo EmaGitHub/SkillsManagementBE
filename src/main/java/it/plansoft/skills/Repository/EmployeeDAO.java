@@ -1,4 +1,4 @@
-package it.plansoft.skills.DAO;
+package it.plansoft.skills.Repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,10 +23,9 @@ public class EmployeeDAO {
     private final Logger logger = Logger.getLogger(this.getClass());
     private Connection conn;
     
-    private String connString = "jdbc:mysql://localhost:3306/demo?user=root&password=root";
+    private String connString = "jdbc:mysql://localhost:3306/skills?user=root&password=root";
     
-    public EmployeeDAO() throws SQLException {
-    	}
+    public EmployeeDAO() throws SQLException {}
 	
 	public void hireEmployee(String name, String lastName, ArrayList<Short> positions, float baseSalary) throws SQLException, ClassNotFoundException {
 		
@@ -92,14 +91,14 @@ public class EmployeeDAO {
 		
 		while (rs.next()) {
 			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
-			emp.setId(rs.getInt("id"));
+			emp.setId(rs.getLong("id"));
 			emp.setMaxWorkHours(rs.getLong("work_hours"));
 			emp.setBaseSalary(rs.getLong("base_salary"));
 			emp.setExtraHours(rs.getLong("extra_hours"));
 			String positions = rs.getString("positions");
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
-			emp.setFinalSalary(this.getFinalSalary((int)emp.getId()));
+			emp.setFinalSalary(this.getFinalSalary((Long)emp.getId()));
 			
 			employeesList.add(emp);
 		}
@@ -122,7 +121,7 @@ public class EmployeeDAO {
 			String positions = rs.getString("positions") != null ? rs.getString("positions") : "";
 			ArrayList<Short> posList = convertStringPositionToList(positions);
 			emp.setPositions(posList);
-			emp.setFinalSalary(this.getFinalSalary((int)emp.getId()));
+			emp.setFinalSalary(this.getFinalSalary((Long)emp.getId()));
 		}
 		conn.close();
 		return emp;
@@ -156,37 +155,6 @@ public class EmployeeDAO {
 				+ "SET extra_hours = "+extraHours+" "
 				+ "WHERE ID = "+id); 
 		conn.close();
-	}
-
-	public void applyPromotionToEmployee(int employeeId, float money, short position) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.jdbc.Driver");
-    	conn = DriverManager.getConnection(this.connString);
-		Statement st = this.conn.createStatement();
-		st.execute("INSERT INTO PROMOTION "
-				+ "(EMPLOYEE_ID, POSITION, MONEY) "
-				+ "VALUES ("
-				+ ""+employeeId+", "
-				+ ""+position+", "
-				+ ""+money+")"); 
-		conn.close();
-	}
-	
-	public List<PromotionDTO> getEmployeePromotions(int id) throws SQLException, ClassNotFoundException {
-		List<PromotionDTO> list = new ArrayList();
-		
-		Class.forName("com.mysql.jdbc.Driver");
-    	conn = DriverManager.getConnection(this.connString);
-		Statement st = this.conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM PROMOTION "
-				+ "WHERE EMPLOYEE_ID = "+id); 
-				
-		if (rs.next()) {
-			PromotionDTO promotion = new PromotionDTO(rs.getInt("employee_id"), rs.getShort("position"), rs.getFloat("money"));
-			list.add(promotion);
-		}
-		conn.close();
-		
-		return list;
 	}
 	
 	public ArrayList<Short> getEmployeePositions(int id) throws SQLException, ClassNotFoundException {
@@ -229,7 +197,7 @@ public class EmployeeDAO {
 			logger.error("Positions not found");
 	}
 	
-	public float getFinalSalary(int id) throws SQLException, ClassNotFoundException {
+	public float getFinalSalary(Long id) throws SQLException, ClassNotFoundException {
 
 		long promotionEarnings = 0;
 		

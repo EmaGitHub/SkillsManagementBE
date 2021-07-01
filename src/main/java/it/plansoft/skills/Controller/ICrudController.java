@@ -1,4 +1,4 @@
-package it.plansoft.skills.Controllers;
+package it.plansoft.skills.Controller;
 
 import java.util.List;
 import java.util.Optional;

@@ -18,15 +18,15 @@ public class IdModel<ID> {
 
 	@Id
     @GeneratedValue
-	protected int id;
+	protected Long id;
 	
 	public IdModel() {	}
 		
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 }

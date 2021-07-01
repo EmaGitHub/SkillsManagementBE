@@ -1,77 +1,69 @@
 package it.plansoft.skills.Configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import it.plansoft.skills.Security.ApplicationUserPermission;
-import it.plansoft.skills.Security.ApplicationUserRole;
+import it.plansoft.skills.jwt.JwtAuthenticationEntryPoint;
+import it.plansoft.skills.jwt.JwtValidateTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
 	private final PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	@Autowired
+	private UserDetailsService jwtUserDetailsService;
+	@Autowired
+	private JwtValidateTokenFilter jwtRequestFilter;
 	
 	@Autowired
 	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.authorizeRequests()
-		// white list
-		.antMatchers("/", "/index", "/css", "/js/*").permitAll()
-		
-		// Permission and Role required
-		.antMatchers(HttpMethod.GET, "/api/*").hasAnyAuthority(ApplicationUserPermission.READ.getPermission())
-		.antMatchers(HttpMethod.DELETE, "/api/dismiss/*").hasAnyRole(ApplicationUserRole.ADMIN.name())
-		.antMatchers(HttpMethod.POST).hasAnyAuthority(ApplicationUserPermission.WRITE.getPermission())
-		
-		.anyRequest().authenticated().and().httpBasic()			//httpBasic -> formLogin
-		//.formLogin().rememberMe()
-		// disabling csrf here, you shouldf enable it before using in production (POST)
-        .and().csrf().disable();
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		// configure AuthenticationManager so that it knows from where to load
+		// user for matching credentials
+		// Use BCryptPasswordEncoder
+		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
 	}
 	
 	@Bean
 	@Override
-	protected UserDetailsService userDetailsService() {
-		//Recupero da DB ...
-		UserDetails user = User.builder()
-				.username("emanuele")
-				.password(this.passwordEncoder.encode("password"))
-				//.roles("ADMIN", "USER")	//ROLE_ADMIN, ROLE_USER
-				.authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
-				.build();
-		
-		UserDetails user2 = User.builder()
-				.username("giuseppe")
-				.password(this.passwordEncoder.encode("password"))
-				//.roles("USER")	//ROLE_USER
-				.authorities(ApplicationUserRole.USER.getGrantedAuthorities())
-				.build();
-		
-		return new InMemoryUserDetailsManager(user, user2);
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
-	
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userService).passwordEncoder(passwordEncoder)
-//	}
-	
-	
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		// We don't need CSRF for this example
+		httpSecurity.csrf().disable()
+				// dont authenticate this particular request
+				.authorizeRequests().antMatchers("/authenticate", "/register", "/refreshtoken").permitAll().
+				// all other requests need to be authenticated
+				anyRequest().authenticated().and()
+				// store user's state.
+				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and().sessionManagement()
+				// stateless session; session won't be used to
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// Add a filter to validate the tokens with every request
+		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
 }

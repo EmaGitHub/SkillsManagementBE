@@ -1,9 +1,9 @@
-package it.plansoft.skills.Controllers;
+package it.plansoft.skills.Controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import it.plansoft.skills.Services.BaseCrudService;
+import it.plansoft.skills.Service.BaseCrudService;
 
 /**
  * 	Xontroller astratto con service e logger

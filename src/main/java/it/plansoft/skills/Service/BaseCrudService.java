@@ -1,4 +1,4 @@
-package it.plansoft.skills.Services;
+package it.plansoft.skills.Service;
 
 import java.util.List;
 import java.util.Optional;

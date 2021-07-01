@@ -1,19 +1,14 @@
-package it.plansoft.skills.Services;
+package it.plansoft.skills.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import it.plansoft.skills.DAO.EmployeeDAO;
 import it.plansoft.skills.DTO.EmployeeDTO;
-import it.plansoft.skills.DTO.PromotionDTO;
-import it.plansoft.skills.Model.BaseModel;
+import it.plansoft.skills.Repository.EmployeeDAO;
 
 @Service
 public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, Integer>, EmployeeDTO, Integer>{
@@ -56,10 +51,6 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 		this.employeeDao.dismissEmployee(id);
 	}
 	
-	public void applyPromotionToEmployee(int employeeId, float money, short position) throws SQLException, ClassNotFoundException {
-		this.employeeDao.applyPromotionToEmployee(employeeId, money, position);
-	}
-	
 	public void applySalaryToEmployee(int id, float baseSalary) throws SQLException, ClassNotFoundException {
 		this.employeeDao.applySalaryToEmployee(id, baseSalary);
 	}
@@ -76,7 +67,7 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 		return this.employeeDao.getEmployeePositions(id);
 	}
 	
-	public float getFinalSalary(int employeeId) throws ClassNotFoundException, SQLException {
+	public float getFinalSalary(Long employeeId) throws ClassNotFoundException, SQLException {
 		return this.employeeDao.getFinalSalary(employeeId);
 	}
 	
@@ -88,12 +79,8 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 		this.employeeDao.changeEmployeePosition(id, position);
 	}
 	
-	public float getTotalSalary(int id) throws ClassNotFoundException, SQLException {
+	public float getTotalSalary(Long id) throws ClassNotFoundException, SQLException {
 		return this.employeeDao.getFinalSalary(id);
-	}
-	
-	public List<PromotionDTO> getPromotions(int id) throws ClassNotFoundException, SQLException {
-		return this.employeeDao.getEmployeePromotions(id);
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {

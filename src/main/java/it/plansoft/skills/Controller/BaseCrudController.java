@@ -1,4 +1,4 @@
-package it.plansoft.skills.Controllers;
+package it.plansoft.skills.Controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import it.plansoft.skills.Model.BaseModel;
-import it.plansoft.skills.Services.BaseCrudService;
+import it.plansoft.skills.Service.BaseCrudService;
 
 public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends BaseModel, ID> implements ICrudController<MODEL, ID> {
 	

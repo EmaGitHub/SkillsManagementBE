@@ -1,4 +1,4 @@
-package it.plansoft.skills.Controllers;
+package it.plansoft.skills.Controller;
 
 /**
  * 
@@ -8,6 +8,6 @@ package it.plansoft.skills.Controllers;
 
 public interface IController<MODEL> {
 	
-	// inserimento interfaccia comuni
+	// inserimento interfaccia comune
 
 }

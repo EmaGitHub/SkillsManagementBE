@@ -1,4 +1,4 @@
-package it.plansoft.skills.Controllers;
+package it.plansoft.skills.Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,21 +23,21 @@ import it.plansoft.skills.DTO.PositionDTO;
 import it.plansoft.skills.DTO.PromotionDTO;
 import it.plansoft.skills.DTO.SalaryDTO;
 import it.plansoft.skills.Model.BaseModel;
-import it.plansoft.skills.Services.BaseCrudService;
-import it.plansoft.skills.Services.CompanyService;
+import it.plansoft.skills.Service.BaseCrudService;
+import it.plansoft.skills.Service.CompanyService;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @RestController
 @RequestMapping("/api")
-public class CompanyController extends BaseCrudController<BaseCrudService, BaseModel, Integer> {
+public class EmployeesController extends BaseCrudController<BaseCrudService, BaseModel, Integer> {
 
 	@Autowired
 	CompanyService companyService;
 	
-	@Autowired
-	public CompanyController(CompanyService service) {
+	public EmployeesController(CompanyService service) {
 		super(service);
 	}
 	
@@ -101,11 +101,6 @@ public class CompanyController extends BaseCrudController<BaseCrudService, BaseM
 		this.companyService.dismissEmployee(id);
 	}
 	
-	@PostMapping(path="/promote")
-	public void applyPromotionToEmployee(@RequestParam("employeeId") int id, @RequestParam("money") float money, @RequestParam("position") short position) throws ClassNotFoundException, SQLException {
-		this.companyService.applyPromotionToEmployee(id, money, position);
-		
-	}
 	
 	@RequestMapping(path="/addPosition/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void addPosition(@PathVariable("id") int id, @RequestBody PositionDTO position) throws ClassNotFoundException, SQLException {
@@ -118,24 +113,10 @@ public class CompanyController extends BaseCrudController<BaseCrudService, BaseM
 	}
 	
 	@GetMapping(value="/employeeTotalSalary/{id}")
-    public String getTotalSalary(@PathVariable("id") int id) throws ClassNotFoundException, SQLException {
+    public String getTotalSalary(@PathVariable("id") Long id) throws ClassNotFoundException, SQLException {
 		return "Total Salary: "+this.companyService.getTotalSalary(id);
     }
 	
-	@GetMapping(value="/promotions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getPromotions(@PathVariable("id") int id) throws ClassNotFoundException, SQLException, JsonProcessingException {
-		
-		List<PromotionDTO> list = this.companyService.getPromotions(id);
-		// Create ObjectMapper
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        // Convert object to JSON string
-        String promJson = mapper.writeValueAsString(list);
-        System.out.println(promJson);
-		return promJson;
-    }
-
 	public static void main(String[] args) {
 
 	}
