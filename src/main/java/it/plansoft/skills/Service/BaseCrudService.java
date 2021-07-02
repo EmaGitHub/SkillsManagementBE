@@ -7,45 +7,58 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * base CRUD implementation
+ * @author ecalvisi
+ *
+ * @param <REPO>
+ * @param <MODEL>
+ * @param <ID>
+ */
+
 public class BaseCrudService<REPO extends JpaRepository<MODEL, ID>, MODEL, ID> implements ICrudService<MODEL, ID> {
 	
-	private JpaRepository<MODEL, ID> repo;
+	protected REPO repo;
 	
-	private final static Logger log = LoggerFactory.getLogger(BaseCrudService.class);
-
-	@Override
-	public List<MODEL> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	protected final static Logger log = LoggerFactory.getLogger(BaseCrudService.class);
+	
+	public BaseCrudService(REPO repo) {
+		this.repo = repo;
 	}
 
 	@Override
+	public List<MODEL> getAll() {
+		List<MODEL> l = repo.findAll();
+		log.info("Data retrieved: "+l);
+		return l;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
 	public Optional<MODEL> getById(ID id) {
-		// TODO Auto-generated method stub
+		Optional<MODEL> o = (Optional<MODEL>) repo.getById(id);
+		log.info("Object retrieved: "+o);
 		return null;
 	}
 
 	@Override
 	public MODEL update(MODEL t) {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.save(t);
 	}
 	
 	@Override
 	public MODEL save(MODEL model) {
-		return null;
+		return repo.save(model);
 	}
 
 	@Override
 	public void delete(MODEL t) {
-		// TODO Auto-generated method stub
-		
+		repo.delete(t);
 	}
 	
 	@Override
 	public void deleteById(ID id) {
-		// TODO Auto-generated method stub
-		
+		repo.deleteById(id);
 	}
 
 }

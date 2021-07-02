@@ -12,7 +12,7 @@ import it.plansoft.skills.Repository.EmployeeDAO;
 
 @Service
 public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, Integer>, EmployeeDTO, Integer>{
-	
+
 	private ArrayList<EmployeeDTO> employees;
     private final Logger logger = Logger.getLogger(this.getClass());
 	
@@ -21,6 +21,7 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 	
 	@Autowired
 	public CompanyService (EmployeeDAO employeeDAO) {
+		super(employeeDAO);
 		this.employees = new ArrayList<EmployeeDTO>();
 		this.employeeDao = employeeDAO;
 	}

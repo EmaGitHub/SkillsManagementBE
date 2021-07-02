@@ -1,4 +1,4 @@
-package it.plansoft.skills.Configuration;
+package it.plansoft.skills.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
