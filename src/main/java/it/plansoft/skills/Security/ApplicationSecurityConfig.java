@@ -58,9 +58,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity
 				.csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/authenticate", "/user/register").permitAll().
+				.authorizeRequests()
+				.antMatchers("/api/authenticate", "/user/register").permitAll()
+				.antMatchers("/api").hasAnyRole("ROLE_SYSTEM_ADMIN")
 				// all other requests need to be authenticated
-				anyRequest().authenticated().and()
+				.anyRequest().authenticated().and()
 				//
 				.exceptionHandling()
 				//
