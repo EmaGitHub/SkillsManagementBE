@@ -1,4 +1,4 @@
-package it.plansoft.skills.jwt;
+package it.plansoft.skills.Security.JWT;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

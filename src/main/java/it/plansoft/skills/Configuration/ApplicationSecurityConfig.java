@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import it.plansoft.skills.jwt.JwtAuthenticationEntryPoint;
-import it.plansoft.skills.jwt.JwtValidateTokenFilter;
+import it.plansoft.skills.Security.JWT.JwtAuthenticationEntryPoint;
+import it.plansoft.skills.Security.JWT.JwtValidateTokenFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +27,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
 	@Autowired
 	private UserDetailsService jwtUserDetailsService;
+	
 	@Autowired
 	private JwtValidateTokenFilter jwtRequestFilter;
 	
@@ -52,16 +54,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
-		httpSecurity.csrf().disable()
+		
+		httpSecurity
+				.csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/authenticate", "/register", "/refreshtoken").permitAll().
+				.authorizeRequests().antMatchers("/authenticate", "/user/register").permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and()
-				// store user's state.
-				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				//
+				.exceptionHandling()
+				//
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				// 
 				.and().sessionManagement()
-				// stateless session; session won't be used to
+				// stateless session: session won't be used 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -47,7 +47,7 @@ public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends B
 	@Override
 	public MODEL add(MODEL model) {
 		log.info("Add model ", model);
-		return (MODEL) service.add(model);
+		return (MODEL) service.save(model);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class BaseCrudService<REPO extends JpaRepository<MODEL, ID>, MODEL, ID> i
 	}
 	
 	@Override
-	public MODEL add(MODEL model) {
+	public MODEL save(MODEL model) {
 		return null;
 	}
 

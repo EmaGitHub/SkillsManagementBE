@@ -28,7 +28,9 @@ public class UserDTO extends BaseModel<Long>{
 	@Column(name = "last_name", nullable = true)
 	private String lastName;
 	@Column(name = "dt_insert", nullable = true)
-	private Date dtInsert;
+	private java.util.Date  dtInsert;
+	@Column(name = "is_system_admin", nullable = true)
+	private Boolean isSystemAdmin;
 
 	public String getUsername() {
 		return username;
@@ -58,12 +60,12 @@ public class UserDTO extends BaseModel<Long>{
 		this.lastName = lastName;
 	}
 
-	public Date getDtInsert() {
+	public java.util.Date getDtInsert() {
 		return dtInsert;
 	}
 
-	public void setDtInsert(Date dtInsert) {
-		this.dtInsert = dtInsert;
+	public void setDtInsert(java.util.Date date) {
+		this.dtInsert = date;
 	}
 
 	public void setId(Long id) {
@@ -80,6 +82,14 @@ public class UserDTO extends BaseModel<Long>{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Boolean getIsSystemAdmin() {
+		return isSystemAdmin;
+	}
+
+	public void setIsSystemAdmin(Boolean isSystemAdmin) {
+		this.isSystemAdmin = isSystemAdmin;
 	}
 
 }

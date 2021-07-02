@@ -12,9 +12,9 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class BaseModel<ID> extends IdModel<ID> {
 	
-	protected Date dtInsert;
+	protected java.util.Date dtInsert;
 
-	public Date getDtInsert() {
+	public java.util.Date getDtInsert() {
 		return this.dtInsert;
 	}
 }

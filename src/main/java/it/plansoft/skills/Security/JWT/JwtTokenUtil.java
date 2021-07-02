@@ -1,4 +1,4 @@
-package it.plansoft.skills.jwt;
+package it.plansoft.skills.Security.JWT;
 
 import java.io.Serializable;
 import java.security.SignatureException;

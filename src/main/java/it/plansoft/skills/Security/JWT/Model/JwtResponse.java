@@ -1,4 +1,4 @@
-package it.plansoft.skills.jwt;
+package it.plansoft.skills.Security.JWT.Model;
 
 import java.io.Serializable;
 public class JwtResponse implements Serializable {
