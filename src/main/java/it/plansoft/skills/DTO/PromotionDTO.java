@@ -3,6 +3,8 @@ package it.plansoft.skills.DTO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,7 +13,8 @@ public class PromotionDTO {
 
 	@Id
 	private int id;
-	@Column
+	@ManyToOne(targetEntity=EmployeeDTO.class, optional=false)
+	@JoinColumn(name="EMPLOYEE_ID", referencedColumnName="ID")
 	private int employeeId;	
 	@Column
 	private short position;
