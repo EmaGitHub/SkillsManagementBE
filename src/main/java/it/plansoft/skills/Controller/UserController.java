@@ -1,5 +1,7 @@
 package it.plansoft.skills.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,9 +16,10 @@ import it.plansoft.skills.Service.UserService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/user")
 public class UserController extends BaseCrudController<UserService, UserDTO, Long> {
 
-	@Autowired
+@	Autowired
 	UserService userService;
 
 	@Autowired
@@ -26,14 +29,14 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 		super(service);
 	}
 	
-	@RequestMapping(value = "public/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public ResponseEntity<?> get() throws Exception{
-//		List<UserDTO> list = super.getAll();
-//		return ResponseEntity.ok(list);
-//	}
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<?> get() throws Exception{
+		List<UserDTO> list = super.getAll();
+		return ResponseEntity.ok(list);
+	}
 }

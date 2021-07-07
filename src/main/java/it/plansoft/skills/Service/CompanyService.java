@@ -2,15 +2,12 @@ package it.plansoft.skills.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import it.plansoft.skills.DTO.EmployeeDTO;
-import it.plansoft.skills.DTO.PromotionDTO;
 import it.plansoft.skills.Repository.EmployeeDAO;
 
 @Service
@@ -67,7 +64,7 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 		this.employeeDao.applyExtraHourToEmployee(id, maxWorkHours);
 	}
 	
-	public ArrayList<Short> getEmployeePositions(Long id) throws SQLException, ClassNotFoundException {
+	public ArrayList<Short> getEmployeePositions(int id) throws SQLException, ClassNotFoundException {
 		return this.employeeDao.getEmployeePositions(id);
 	}
 	
@@ -77,10 +74,6 @@ public class CompanyService extends BaseCrudService<JpaRepository<EmployeeDTO, I
 	
 	public void addEmployeePosition(int id, short position) throws SQLException, ClassNotFoundException {
 		this.employeeDao.addEmployeePosition(id, position);
-	}
-	
-	public List<PromotionDTO> getEmployeePromotions(Long id) throws SQLException, ClassNotFoundException {
-		return this.employeeDao.getEmployeePromotions(id);
 	}
 	
 	public void changeEmployeePosition(int id, short position) throws ClassNotFoundException, SQLException {
