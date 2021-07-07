@@ -25,11 +25,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final PasswordEncoder passwordEncoder;
 	
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	
 	@Autowired
 	private UserDetailsService jwtUserDetailsService;
+	
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	
 	@Autowired
 	private JwtValidateTokenFilter jwtRequestFilter;
@@ -39,19 +40,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// configure AuthenticationManager so that it knows from where to load
-		// user for matching credentials
-		// Use BCryptPasswordEncoder
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
-	}
-	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		// configure AuthenticationManager so that it knows from where to load user for matching credentials
+		// Use BCryptPasswordEncoder
+		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
+	}
+	
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		
@@ -59,8 +59,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests()
-				.antMatchers("/api/authenticate", "/user/register").permitAll()
-				.antMatchers("/api").hasAnyRole("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/public/**").permitAll()
+				.antMatchers("/api/**").hasAnyAuthority("ROLE_SYSTEM_ADMIN")
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and()
 				//
@@ -71,7 +71,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().sessionManagement()
 				// stateless session: session won't be used 
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		// Add a filter to validate the tokens with every request
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+				// Add a filter to validate the tokens with every request
+				httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

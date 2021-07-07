@@ -33,15 +33,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
-public class EmployeeController extends BaseCrudController<BaseCrudService, BaseModel, Integer> {
+@RequestMapping(value = "/api")
+public class EmployeeController {
 
 	@Autowired
 	CompanyService companyService;
-	
-	public EmployeeController(CompanyService service) {
-		super(service);
-	}
+
 	
 	@GetMapping(value="/test", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getTestData() {		
@@ -117,6 +114,11 @@ public class EmployeeController extends BaseCrudController<BaseCrudService, Base
 	@GetMapping(value="/employeeTotalSalary/{id}")
     public String getTotalSalary(@PathVariable("id") Long id) throws ClassNotFoundException, SQLException {
 		return "Total Salary: "+this.companyService.getTotalSalary(id);
+    }
+	
+	@GetMapping(value="/promotions/{id}")
+    public List<PromotionDTO> getPromotions(@PathVariable("id") Long id) throws ClassNotFoundException, SQLException {
+		return this.companyService.getEmployeePromotions(id);
     }
 	
 	public static void main(String[] args) {

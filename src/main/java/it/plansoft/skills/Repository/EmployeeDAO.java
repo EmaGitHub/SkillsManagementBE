@@ -39,7 +39,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
-		String query = "INSERT INTO EMPLOYEE "
+		String query = "INSERT INTO employee "
 				+ "(NAME, LAST_NAME, POSITIONS, BASE_SALARY) "
 				+ "VALUES ("
 				+ "'"+name+"', "
@@ -54,7 +54,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
-		st.execute("DELETE FROM EMPLOYEE "
+		st.execute("DELETE FROM employee "
 				+ "WHERE ID = "+id); 
 		conn.close();
 	}
@@ -66,7 +66,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
+		ResultSet rs = st.executeQuery("SELECT * FROM employee"); 
 		
 		while (rs.next()) {
 			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
@@ -92,7 +92,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE"); 
+		ResultSet rs = st.executeQuery("SELECT * FROM employee"); 
 		
 		while (rs.next()) {
 			EmployeeDTO emp = new EmployeeDTO(rs.getString("name"), rs.getString("last_name"));
@@ -116,7 +116,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT * FROM EMPLOYEE "
+		ResultSet rs = st.executeQuery("SELECT * FROM employee "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
 			emp = new EmployeeDTO(rs.getString("name") != null ? rs.getString("name") : "", rs.getString("last_name") != null ? rs.getString("last_name") : "");
@@ -136,7 +136,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement(); 
-		st.executeUpdate("UPDATE EMPLOYEE "
+		st.executeUpdate("UPDATE employee "
 				+ "SET base_salary = "+baseSalary+" "
 				+ "WHERE ID = "+id); 
 		conn.close();
@@ -146,7 +146,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
-		st.executeUpdate("UPDATE EMPLOYEE "
+		st.executeUpdate("UPDATE employee "
 				+ "SET work_hours = "+maxWorkHours+" "
 				+ "WHERE ID = "+id); 
 		conn.close();
@@ -156,17 +156,17 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = conn.createStatement(); 
-		st.executeUpdate("UPDATE EMPLOYEE "
+		st.executeUpdate("UPDATE employee "
 				+ "SET extra_hours = "+extraHours+" "
 				+ "WHERE ID = "+id); 
 		conn.close();
 	}
 	
-	public ArrayList<Short> getEmployeePositions(int id) throws SQLException, ClassNotFoundException {
+	public ArrayList<Short> getEmployeePositions(Long id) throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT POSITION FROM EMPLOYEE "
+		ResultSet rs = st.executeQuery("SELECT POSITION FROM employee "
 				+ "WHERE ID = "+id); 
 		conn.close();
 		
@@ -178,11 +178,29 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		return convertStringPositionToList(positionAsString);
 	}
 	
+	public List<PromotionDTO> getEmployeePromotions(Long id) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+    	conn = DriverManager.getConnection(this.connString);
+		Statement st = this.conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT * FROM promotion "
+				+ "WHERE EMPLOYEE_ID = "+id); 
+		
+		List<PromotionDTO> list = null;
+		
+		while (rs.next()) {
+			PromotionDTO promotion = new PromotionDTO(rs.getInt(1), rs.getShort(2), rs.getFloat(3));
+			list.add(promotion);
+		}
+		conn.close();
+
+		return list;
+	}
+	
 	public void addEmployeePosition(int id, short position) throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
     	conn = DriverManager.getConnection(this.connString);
 		Statement st = this.conn.createStatement();
-		ResultSet rs = st.executeQuery("SELECT POSITIONS FROM EMPLOYEE "
+		ResultSet rs = st.executeQuery("SELECT POSITIONS FROM employee "
 				+ "WHERE ID = "+id); 
 		
 		String positionAsString = "";
@@ -193,7 +211,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 				positionAsString += ",";
 			positionAsString += position;
 
-			int rs2 = st.executeUpdate("UPDATE EMPLOYEE "
+			int rs2 = st.executeUpdate("UPDATE employee "
 					+ "SET POSITIONS = '" + positionAsString + "'"
 					+ "WHERE ID = "+id); 
 			conn.close();
@@ -215,26 +233,26 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
     	
 		Statement st = this.conn.createStatement();
 		ResultSet rs;
-		rs = st.executeQuery("SELECT BASE_SALARY FROM EMPLOYEE "
+		rs = st.executeQuery("SELECT BASE_SALARY FROM employee "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
 			baseSalary = rs.getFloat(1);
 		}
 		
-		rs = st.executeQuery("SELECT EXTRA_HOURS FROM EMPLOYEE "
+		rs = st.executeQuery("SELECT EXTRA_HOURS FROM employee "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
 			extraHours += rs.getFloat(1);
 		}
 		
-		rs = st.executeQuery("SELECT WORK_HOURS FROM EMPLOYEE "
+		rs = st.executeQuery("SELECT WORK_HOURS FROM employee "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
 			workHours += rs.getFloat(1);
 		}
 		
-		rs = st.executeQuery("SELECT * FROM PROMOTION "
-				+ "WHERE EMPLOYEE_ID = "+id); 
+		rs = st.executeQuery("SELECT * FROM promotion "
+				+ "WHERE employee_ID = "+id); 
 		while (rs.next()) {
 			promotionEarnings += rs.getFloat("money");	// promotion number * position
 		}
@@ -253,17 +271,17 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
     	float baseSalary = 0;
     	
 		Statement st = this.conn.createStatement();
-		st.executeUpdate("UPDATE EMPLOYEE SET "
+		st.executeUpdate("UPDATE employee SET "
 				+ "PRINCIPAL_POSITION = "+position+" "
 				+ "WHERE ID = "+id);
 		
-		rs = st.executeQuery("SELECT count(*) FROM PROMOTION "
-				+ "WHERE EMPLOYEE_ID = "+id); 
+		rs = st.executeQuery("SELECT count(*) FROM promotion "
+				+ "WHERE employee_ID = "+id); 
 		while (rs.next()) {
 			promotionNumber += rs.getInt(1);
 		}
 		
-		rs = st.executeQuery("SELECT BASE_SALARY FROM EMPLOYEE "
+		rs = st.executeQuery("SELECT BASE_SALARY FROM employee "
 				+ "WHERE ID = "+id); 
 		while (rs.next()) {
 			baseSalary += rs.getFloat(1);
@@ -271,7 +289,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 		
 		float newSalary;
 		newSalary = baseSalary + promotionNumber * position;
-		st.executeUpdate("UPDATE EMPLOYEE "
+		st.executeUpdate("UPDATE employee "
 				+ "SET BASE_SALARY = "+newSalary+" "
 				+ "where ID = "+id);
 	}
