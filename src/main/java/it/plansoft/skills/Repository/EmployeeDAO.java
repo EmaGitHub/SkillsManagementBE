@@ -27,6 +27,7 @@ public class EmployeeDAO implements JpaRepository<EmployeeDTO, Integer>{
 	
     private final Logger logger = Logger.getLogger(this.getClass());
     private Connection conn;
+    
     private String connString = "jdbc:mysql://localhost:3306/skills?user=root&password=root";
     
     public EmployeeDAO() throws SQLException {}
