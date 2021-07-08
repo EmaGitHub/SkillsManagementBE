@@ -31,12 +31,12 @@ public class AuthenticationController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 	
-	@RequestMapping(value = "/api/authenticate", method = RequestMethod.POST)
+	@RequestMapping(value = "/public/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new JwtResponse(token));
+		return ResponseEntity.ok(new JwtResponse(authenticationRequest.getUsername(), token));
 	}
 	
 	private void authenticate(String username, String password) throws Exception {

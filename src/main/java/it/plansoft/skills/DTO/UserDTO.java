@@ -21,7 +21,7 @@ public class UserDTO extends BaseModel<Long>{
 	@Column(name = "id", nullable = false, unique = true)
 	private Long id;
 	@Getter @Setter
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 	@Getter @Setter
 	@Column(name = "password", nullable = false)
@@ -36,6 +36,6 @@ public class UserDTO extends BaseModel<Long>{
 	@Column(name = "dt_insert", nullable = true)
 	private java.util.Date  dtInsert;
 	@Getter @Setter
-	@Column(name = "is_system_admin", nullable = true)
+	@Column(name = "is_system_admin", nullable = true, columnDefinition="BOOLEAN DEFAULT false")
 	private Boolean isSystemAdmin;
 }

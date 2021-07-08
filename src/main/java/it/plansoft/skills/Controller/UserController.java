@@ -1,8 +1,13 @@
 package it.plansoft.skills.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +21,9 @@ import it.plansoft.skills.Service.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
 public class UserController extends BaseCrudController<UserService, UserDTO, Long> {
+
+	protected final static Logger log = LoggerFactory.getLogger(UserController.class);
 
 @	Autowired
 	UserService userService;
@@ -29,14 +35,23 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 		super(service);
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/public/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+		UserDTO newUser = null;
+		try {
+			newUser = userDetailsService.save(user);
+			return ResponseEntity.ok(newUser);
+		}
+		catch (Exception e) {
+			log.error("ERROR Registering "+e, "Exception occurs");
+			Map<String,String> response = new HashMap<String, String>();
+			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
+				response.put("error", "DataIntegrityViolationException");
+		        return ResponseEntity.ok(response);
+			}
+			response.put("error", "GenericError");
+	        return ResponseEntity.ok(response);
+		}
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<?> get() throws Exception{
-		List<UserDTO> list = super.getAll();
-		return ResponseEntity.ok(list);
-	}
 }
