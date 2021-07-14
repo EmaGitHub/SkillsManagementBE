@@ -16,11 +16,15 @@ import it.plansoft.skills.Repository.UserDAO;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 	
-	@Autowired
 	private UserDAO userDAO;
 	
-	@Autowired
 	private PasswordEncoder bcryptEncoder;
+	
+	@Autowired
+	public JwtUserDetailsService(UserDAO userDAO, PasswordEncoder bcryptEncoder) {
+		this.userDAO = userDAO;
+		this.bcryptEncoder = bcryptEncoder;
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

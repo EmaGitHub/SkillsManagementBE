@@ -1,10 +1,15 @@
 package it.plansoft.skills.Model;
 
-import java.sql.Date;
-
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * creazione di base per i modelli di dati
@@ -13,20 +18,14 @@ import javax.persistence.MappedSuperclass;
  * @param <ID>
  */
 
+@AllArgsConstructor
+@NoArgsConstructor
 @MappedSuperclass
 public class IdModel<ID> {
 
 	@Id
-    @GeneratedValue
-	protected Long id;
-	
-	public IdModel() {	}
-		
-	public Long getId() {
-		return this.id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@Getter @Setter
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false, unique = true)
+	protected ID id;
 }

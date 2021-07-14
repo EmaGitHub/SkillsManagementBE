@@ -1,25 +1,20 @@
 package it.plansoft.skills.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import it.plansoft.skills.Model.BaseModel;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserDTO extends BaseModel<Long>{
 
-	@Id
-	@Getter @Setter
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, unique = true)
-	private Long id;
 	@Getter @Setter
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;

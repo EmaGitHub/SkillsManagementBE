@@ -25,7 +25,7 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 
 	protected final static Logger log = LoggerFactory.getLogger(UserController.class);
 
-@	Autowired
+	@Autowired
 	UserService userService;
 
 	@Autowired

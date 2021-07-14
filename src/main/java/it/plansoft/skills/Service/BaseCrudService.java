@@ -1,11 +1,14 @@
 package it.plansoft.skills.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import it.plansoft.skills.Model.BaseModel;
 
 /**
  * base CRUD implementation
@@ -48,6 +51,7 @@ public class BaseCrudService<REPO extends JpaRepository<MODEL, ID>, MODEL, ID> i
 	
 	@Override
 	public MODEL save(MODEL model) {
+		((BaseModel)model).setDtInsert(new java.util.Date());
 		return repo.save(model);
 	}
 

@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import it.plansoft.skills.Model.BaseModel;
 import it.plansoft.skills.Service.BaseCrudService;
@@ -25,7 +28,8 @@ public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends B
 		this.service = service;
 	}
 
-	@GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "")
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public List<MODEL> getAll() {
 		log.info("Get All");
@@ -45,7 +49,8 @@ public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends B
 	}
 
 	@Override
-	public MODEL add(MODEL model) {
+	@PostMapping(path = "", consumes = "application/json", produces = "application/json")
+	public MODEL add(@RequestBody MODEL model) {
 		log.info("Add model ", model);
 		return (MODEL) service.save(model);
 	}

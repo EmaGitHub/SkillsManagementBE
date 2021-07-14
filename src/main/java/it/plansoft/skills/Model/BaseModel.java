@@ -1,20 +1,33 @@
 package it.plansoft.skills.Model;
 
-import java.sql.Date;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+import it.plansoft.skills.DTO.SkillDTO;
+import it.plansoft.skills.DTO.UserDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /*
  *  classe di base per i modelli di dati: id + tracciamento inserimento / modifica
  */
+
+@AllArgsConstructor
+@NoArgsConstructor
 @MappedSuperclass
+@JsonSubTypes(
+{
+    @Type(value = UserDTO.class, name = "user"),
+    @Type(value = SkillDTO.class, name = "skill")
+})
 public abstract class BaseModel<ID> extends IdModel<ID> {
 	
+	@Getter @Setter
+	@Column(name = "dt_insert", nullable = false)
 	protected java.util.Date dtInsert;
-
-	public java.util.Date getDtInsert() {
-		return this.dtInsert;
-	}
 }
