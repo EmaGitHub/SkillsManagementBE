@@ -20,9 +20,6 @@ public class SkillDTO extends BaseModel<Integer> {
 	@Column(name = "competence", nullable = false)
 	private String competence;
 	@Getter @Setter
-	@Column(name = "value", nullable = false)
-	private float value;
-	@Getter @Setter
 	@Column(name = "area_id", nullable = true)
 	private int areaId;
 } 

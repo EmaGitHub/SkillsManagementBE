@@ -44,13 +44,13 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 		}
 		catch (Exception e) {
 			log.error("ERROR Registering "+e, "Exception occurs");
-			Map<String,String> response = new HashMap<String, String>();
+			Map<String,Object> response = new HashMap<String, Object>();
 			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
 				response.put("error", "DataIntegrityViolationException");
-		        return ResponseEntity.ok(response);
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 			}
 			response.put("error", "GenericError");
-	        return ResponseEntity.ok(response);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 

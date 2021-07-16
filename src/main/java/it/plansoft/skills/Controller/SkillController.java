@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import it.plansoft.skills.DTO.SkillAreaDTO;
 import it.plansoft.skills.DTO.SkillDTO;
+import it.plansoft.skills.Model.RestResponse;
 import it.plansoft.skills.Service.SkillAreaService;
 import it.plansoft.skills.Service.SkillService;
 
@@ -47,10 +49,14 @@ public class SkillController extends BaseCrudController<SkillService, SkillDTO, 
 			return ResponseEntity.ok(savedArea);
 		}
 		catch (Exception e) {
-			this.log.error("Skill area not created. Exception throwed "+e);
-			Map<String,String> response = new HashMap<String, String>();
-			response.put("error", "Skill area not saved");
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			log.error("Skill area not created. Exception throwed "+e);
+	        Map<String,Object> response = new HashMap<String, Object>();
+			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
+				response.put("error", "DataIntegrityViolationException");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+			response.put("error", "GenericError");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
@@ -66,6 +72,25 @@ public class SkillController extends BaseCrudController<SkillService, SkillDTO, 
 			Map<String,String> response = new HashMap<String, String>();
 			response.put("error", "Skill areas not retrieved");
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	@PostMapping
+	@RequestMapping(path = "/", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> saveSkill(@RequestBody SkillDTO skill) throws ClassNotFoundException, SQLException  {
+		try {
+			SkillDTO savedArea = skillService.save(skill);
+			return ResponseEntity.ok(savedArea);
+		}
+		catch (Exception e) {
+			log.error("Skill area not created. Exception throwed "+e);
+	        Map<String,Object> response = new HashMap<String, Object>();
+			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
+				response.put("error", "DataIntegrityViolationException");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+			response.put("error", "GenericError");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 }
