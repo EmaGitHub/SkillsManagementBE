@@ -3,6 +3,8 @@ package it.plansoft.skills.Controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
+
 /**
  * Controller per operazioni CRUD
  * 
@@ -15,22 +17,22 @@ public interface ICrudController<MODEL, ID> extends IController {
 	/**
 	 *  recupero oggetti (non paginato)
 	 */
-	public List<MODEL> getAll();
+	public ResponseEntity<List<MODEL>> getAll();
 	
 	/**
 	 * recupero oggetto specifico
 	 */
-	public Optional<MODEL> getById(ID id);
+	public ResponseEntity<Optional<MODEL>> getById(ID id);
 	
 	/**
 	 * aggiornamento dell'entity
 	 */
-	public MODEL update(MODEL model, ID id);
+	public ResponseEntity<MODEL> update(MODEL model, ID id);
 	
 	/**
 	 * inserimento dell'entity
 	 */
-	public MODEL add(MODEL model);
+	public ResponseEntity<?> save(MODEL model);
 	
 	/**
 	 * cancellazione tramite id

@@ -74,16 +74,15 @@ public class SkillController extends BaseCrudController<SkillService, SkillDTO, 
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
-	@PostMapping
-	@RequestMapping(path = "/", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> saveSkill(@RequestBody SkillDTO skill) throws ClassNotFoundException, SQLException  {
+
+	@Override
+	public ResponseEntity<?> save(@RequestBody SkillDTO skill) {
 		try {
 			SkillDTO savedArea = skillService.save(skill);
 			return ResponseEntity.ok(savedArea);
 		}
 		catch (Exception e) {
-			log.error("Skill area not created. Exception throwed "+e);
+			log.error("Skill not created. Exception throwed "+e);
 	        Map<String,Object> response = new HashMap<String, Object>();
 			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
 				response.put("error", "DataIntegrityViolationException");
@@ -93,5 +92,7 @@ public class SkillController extends BaseCrudController<SkillService, SkillDTO, 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
+	
+	
 }
 

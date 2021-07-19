@@ -20,6 +20,6 @@ public class SkillDTO extends BaseModel<Integer> {
 	@Column(name = "competence", nullable = false)
 	private String competence;
 	@Getter @Setter
-	@Column(name = "area_id", nullable = true)
+	@Column(name = "area_id", nullable = false)
 	private int areaId;
 } 

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,28 +32,28 @@ public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends B
 	@RequestMapping(path = "")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public List<MODEL> getAll() {
+	public ResponseEntity<List<MODEL>> getAll() {
 		log.info("Get All");
-		return service.getAll();
+		return ResponseEntity.ok(service.getAll());
 	}
 
 	@Override
-	public Optional<MODEL> getById(ID id) {
+	public ResponseEntity<Optional<MODEL>> getById(ID id) {
 		log.info("Get by ID");
-		return service.getById(id);
+		return ResponseEntity.ok(service.getById(id));
 	}
 
 	@Override
-	public MODEL update(MODEL model, ID id) {
+	public ResponseEntity<MODEL> update(MODEL model, ID id) {
 		log.info("Update model ", model, id);
-		return (MODEL) service.update(model);
+		return ResponseEntity.ok((MODEL)service.update(model));
 	}
 
 	@Override
 	@PostMapping(path = "", consumes = "application/json", produces = "application/json")
-	public MODEL add(@RequestBody MODEL model) {
+	public ResponseEntity<?> save(@RequestBody MODEL model) {
 		log.info("Add model ", model);
-		return (MODEL) service.save(model);
+		return ResponseEntity.ok((MODEL)service.save(model));
 	}
 
 	@Override
