@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import it.plansoft.skills.DTO.SkillAreaDTO;
 
 @Repository
-public interface SkillAreaDAO extends JpaRepository<SkillAreaDTO, Integer> {
-	
+public interface SkillAreaDAO extends JpaRepository<SkillAreaDTO, Integer>, SkillAreaDAOCustom {
 }	

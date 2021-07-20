@@ -10,8 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +75,19 @@ public class SkillController extends BaseCrudController<SkillService, SkillDTO, 
 			Map<String,String> response = new HashMap<String, String>();
 			response.put("error", "Skill areas not retrieved");
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	@DeleteMapping
+	@PreAuthorize("hasAnyAuthority('SYSTEM_ADMIN')")
+	@RequestMapping(path = "/area/{areaID}")
+	public ResponseEntity<?> deleteSkillArea(@PathVariable(value="areaID") int id) throws ClassNotFoundException, SQLException  {
+		try {
+			int deletedSkills = skillAreaService.deleteSkillArea(id);
+			return ResponseEntity.ok(deletedSkills);
+		}
+		catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
 		}
 	}
 

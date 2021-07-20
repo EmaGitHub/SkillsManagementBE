@@ -2,6 +2,8 @@ package it.plansoft.skills.Security.JWT;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import it.plansoft.skills.DTO.RoleDTO;
 import it.plansoft.skills.DTO.UserDTO;
 import it.plansoft.skills.Repository.UserDAO;
 @Service
@@ -33,11 +36,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		// if System Admin
-		if (user.getIsSystemAdmin()) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_SYSTEM_ADMIN"));
-		}
+		// Check Roles
+		Set<RoleDTO> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+         
+        for (RoleDTO role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+         
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
 	}
 	
@@ -48,7 +54,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setFirstName(user.getFirstName());
 		newUser.setLastName(user.getLastName());
 		newUser.setDtInsert(new java.util.Date());
-		newUser.setIsSystemAdmin(user.getIsSystemAdmin());
 		return userDAO.save(newUser);
 	}
 }

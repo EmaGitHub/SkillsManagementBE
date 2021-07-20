@@ -28,7 +28,6 @@ public class JwtValidateTokenFilter extends OncePerRequestFilter {
 	}
 
 	private static final String REFRESH_TOKEN = "http://localhost:8080/refreshtoken";
-
 	private String token;
 	
 	@Autowired

@@ -11,6 +11,5 @@ public class SkillService extends BaseCrudService<JpaRepository<SkillDTO, Intege
 	public SkillService(JpaRepository<SkillDTO, Integer> repo) {
 		super(repo);
 	}
-
 }
  

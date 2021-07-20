@@ -39,8 +39,4 @@ public interface ICrudController<MODEL, ID> extends IController {
 	 */
 	public void deleteById(ID id);
 	
-	/**
-	 * cancellazione
-	 */
-	public void delete(MODEL model);
 }
