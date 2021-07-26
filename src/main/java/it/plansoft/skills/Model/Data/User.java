@@ -1,6 +1,7 @@
 package it.plansoft.skills.Model.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class User extends BaseModel<Long> implements Serializable {
 	private String lastName;
 	@Getter @Setter
 	@Column(name = "dt_insert", nullable = true)
-	private java.util.Date  dtInsert;
+	private LocalDate  dtInsert;
 	@Getter @Setter
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

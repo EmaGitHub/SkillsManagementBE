@@ -32,9 +32,6 @@ public class UserDTO extends BaseModel<Long>{
 	@Column(name = "last_name", nullable = true)
 	private String lastName;
 	@Getter @Setter
-	@Column(name = "dt_insert", nullable = true)
-	private java.util.Date  dtInsert;
-	@Getter @Setter
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

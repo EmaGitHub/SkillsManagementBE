@@ -31,13 +31,13 @@ public class AuthenticationController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
-	private JwtUserDetailsService userDetailsService;
+	private JwtUserDetailsService jwtUserDetailsService;
 	
 	@RequestMapping(value = "/public/authenticate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		try {
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			return ResponseEntity.ok(new JwtResponse(authenticationRequest.getUsername(), token, 200));
 		}

@@ -21,11 +21,8 @@ public class SkillAreaDAOCustomImpl implements SkillAreaDAOCustom {
     String PASS = "root";
     
     @Override
-	@Transactional(rollbackFor=Exception.class)
-	public int deleteAreaById(int areaId) throws SQLException {
-        
+	public int deleteAreaById(int areaId) throws SQLException {  
         int deletedItems = 0;
-  
         List<Integer> areaChildren = getAreaChildren(areaId);
         // add root area to hierarchy for delete
         if (areaChildren == null)
@@ -41,7 +38,6 @@ public class SkillAreaDAOCustomImpl implements SkillAreaDAOCustom {
 	}
 	
 	private List<Integer> getAreaChildren(int areaId) throws SQLException {
-		
 		List<Integer> deletionHierarchy = new ArrayList<Integer>();
 		try {
     		String findChildren = "SELECT * FROM skill_area WHERE parent_id = ?";
@@ -69,6 +65,7 @@ public class SkillAreaDAOCustomImpl implements SkillAreaDAOCustom {
 			return deletionHierarchy;
 	}
 	
+	@Transactional(rollbackFor=Exception.class)
 	private int deleteSkillsAndArea(int areaId) throws SQLException {
 		int deletedItems = 0;
 		

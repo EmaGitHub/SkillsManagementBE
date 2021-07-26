@@ -1,4 +1,4 @@
-package it.plansoft.skills;
+package it.plansoft.skills.Controller;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package it.plansoft.skills.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +51,7 @@ public class BaseCrudService<REPO extends JpaRepository<MODEL, ID>, MODEL, ID> i
 	
 	@Override
 	public MODEL save(MODEL model) {
-		((BaseModel)model).setDtInsert(new java.util.Date());
+		((BaseModel)model).setDtInsert(LocalDate.now());
 		return repo.save(model);
 	}
 

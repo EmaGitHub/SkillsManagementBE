@@ -1,5 +1,7 @@
 package it.plansoft.skills.Model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -29,5 +31,5 @@ public abstract class BaseModel<ID> extends IdModel<ID> {
 	
 	@Getter @Setter
 	@Column(name = "dt_insert", nullable = false)
-	protected java.util.Date dtInsert;
+	protected LocalDate dtInsert;
 }

@@ -1,5 +1,6 @@
 package it.plansoft.skills.Security.JWT;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
 		newUser.setFirstName(user.getFirstName());
 		newUser.setLastName(user.getLastName());
-		newUser.setDtInsert(new java.util.Date());
+		newUser.setDtInsert(LocalDate.now());
 		return userDAO.save(newUser);
 	}
 }
