@@ -20,6 +20,7 @@ public class SkillAreaDAOCustomImpl implements SkillAreaDAOCustom {
     String USER = "root";
     String PASS = "root";
     
+    @Override
 	@Transactional(rollbackFor=Exception.class)
 	public int deleteAreaById(int areaId) throws SQLException {
         

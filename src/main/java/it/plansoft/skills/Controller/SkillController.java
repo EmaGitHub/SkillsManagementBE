@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import it.plansoft.skills.Controller.Abstraction.BaseCrudController;
 import it.plansoft.skills.DTO.SkillAreaDTO;
 import it.plansoft.skills.DTO.SkillDTO;
 import it.plansoft.skills.Model.RestResponse;
