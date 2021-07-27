@@ -22,6 +22,7 @@ import it.plansoft.skills.Service.UserService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("user")
 public class UserController extends BaseCrudController<UserService, UserDTO, Long> {
 
 	protected final static Logger log = LoggerFactory.getLogger(UserController.class);
@@ -29,30 +30,10 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 	@Autowired
 	UserService userService;
 
-	@Autowired
-	private JwtUserDetailsService userDetailsService;
-	
 	public UserController(UserService service) {
 		super(service);
 	}
 	
-	@RequestMapping(value = "/public/register", method = RequestMethod.POST)
-	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-		UserDTO newUser = null;
-		try {
-			newUser = userDetailsService.save(user);
-			return ResponseEntity.ok(newUser);
-		}
-		catch (Exception e) {
-			log.error("ERROR Registering "+e, "Exception occurs");
-			Map<String,Object> response = new HashMap<String, Object>();
-			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
-				response.put("error", "DataIntegrityViolationException");
-		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-			}
-			response.put("error", "GenericError");
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
+	
 
 }

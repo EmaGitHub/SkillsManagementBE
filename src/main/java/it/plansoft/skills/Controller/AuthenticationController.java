@@ -1,5 +1,10 @@
 package it.plansoft.skills.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,17 +20,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.plansoft.skills.DTO.UserDTO;
 import it.plansoft.skills.Security.JWT.JwtTokenUtil;
 import it.plansoft.skills.Security.JWT.JwtUserDetailsService;
 import it.plansoft.skills.Security.JWT.Model.JwtRequest;
 import it.plansoft.skills.Security.JWT.Model.JwtResponse;
+import it.plansoft.skills.Service.UserService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("public")
 public class AuthenticationController {
+	
+	protected final static Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
 	
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -33,7 +49,26 @@ public class AuthenticationController {
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
 	
-	@RequestMapping(value = "/public/authenticate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		UserDTO newUser = null;
+		try {
+			newUser = userDetailsService.save(user); 
+			return ResponseEntity.ok(newUser);
+		}
+		catch (Exception e) {
+			log.error("ERROR Registering "+e, "Exception occurs");
+			Map<String,Object> response = new HashMap<String, Object>();
+			if (e.toString().startsWith("org.springframework.dao.DataIntegrityViolationException")) {
+				response.put("error", "DataIntegrityViolationException");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			}
+			response.put("error", "GenericError");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	@RequestMapping(value = "/authenticate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		try {
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
