@@ -17,7 +17,7 @@ import lombok.Setter;
 public class SkillAreaDTO extends BaseModel<Integer> {
 	
 	@Getter @Setter
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 	@Getter @Setter
 	@Column(name = "description", nullable = true)

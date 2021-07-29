@@ -5,46 +5,21 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import it.plansoft.skills.DTO.RoleDTO;
 import it.plansoft.skills.Model.BaseModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseModel<Long> implements Serializable {
 
-	@Getter @Setter
-	@Column(name = "username", nullable = false, unique = true)
+	private Long id;
 	private String username;
-	@Getter @Setter
-	@Column(name = "password", nullable = false)
 	private String password;
-	@Getter @Setter
-	@Column(name = "first_name", nullable = true)
 	private String firstName;
-	@Getter @Setter
-	@Column(name = "last_name", nullable = true)
 	private String lastName;
-	@Getter @Setter
-	@Column(name = "dt_insert", nullable = true)
 	private LocalDate  dtInsert;
-	@Getter @Setter
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-            )
     private Set<RoleDTO> roles = new HashSet<>();
 	
 }

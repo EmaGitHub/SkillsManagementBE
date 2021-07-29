@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 import it.plansoft.skills.Model.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "user")
-public class UserDTO extends BaseModel<Long>{
+public class UserDTO extends BaseModel<Long> {
 
 	@Getter @Setter
 	@Column(name = "username", nullable = false, unique = true)
@@ -34,7 +35,7 @@ public class UserDTO extends BaseModel<Long>{
 	@Getter @Setter
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
             )
