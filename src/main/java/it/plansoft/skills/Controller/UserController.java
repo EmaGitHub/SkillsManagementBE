@@ -24,7 +24,5 @@ public class UserController extends BaseCrudController<UserService, UserDTO, Lon
 	public UserController(UserService service) {
 		super(service);
 	}
-	
-	
 
 }

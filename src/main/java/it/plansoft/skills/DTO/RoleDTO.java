@@ -1,21 +1,22 @@
 package it.plansoft.skills.DTO;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+import it.plansoft.skills.Model.IdModel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "role")
-public class RoleDTO {
+public class RoleDTO extends IdModel<Integer>{
 	
-    @Id
-    @Column(name = "role_id")
-    @Getter @Setter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-     
     @Getter @Setter
     @Column(name = "name")
     private String name;
-    }
+}

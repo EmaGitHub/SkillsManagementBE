@@ -1,4 +1,4 @@
-package it.plansoft.skills.Repository;
+package it.plansoft.skills.Repository.Skills;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -37,11 +37,10 @@ public class BaseCrudService<REPO extends JpaRepository<MODEL, ID>, MODEL, ID> i
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Optional<MODEL> getById(ID id) {
-		Optional<MODEL> o = (Optional<MODEL>) repo.getById(id);
-		log.info("Object retrieved: "+o);
-		return null;
+		Optional<MODEL> item = repo.findById(id);
+		log.info("Object retrieved: "+item);
+		return item;
 	}
 
 	@Override

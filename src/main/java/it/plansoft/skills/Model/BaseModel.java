@@ -30,6 +30,6 @@ import lombok.Setter;
 public abstract class BaseModel<ID> extends IdModel<ID> {
 	
 	@Getter @Setter
-	@Column(name = "dt_insert", nullable = false)
+	@Column(name = "dt_insert", nullable = true)
 	protected LocalDate dtInsert;
 }

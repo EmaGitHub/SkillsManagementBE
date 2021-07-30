@@ -1,4 +1,4 @@
-package it.plansoft.skills.Repository;
+package it.plansoft.skills.Repository.Skills;
 
 import java.sql.SQLException;
 

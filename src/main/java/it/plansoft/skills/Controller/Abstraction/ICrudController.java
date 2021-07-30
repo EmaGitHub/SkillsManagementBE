@@ -22,7 +22,7 @@ public interface ICrudController<MODEL, ID> extends IController {
 	/**
 	 * recupero oggetto specifico
 	 */
-	public ResponseEntity<Optional<MODEL>> getById(ID id);
+	public ResponseEntity<?> getById(ID id);
 	
 	/**
 	 * aggiornamento dell'entity
