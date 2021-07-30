@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import it.plansoft.skills.Controller.Abstraction.BaseCrudController;
 import it.plansoft.skills.DTO.SkillAreaDTO;
 import it.plansoft.skills.DTO.SkillDTO;
-import it.plansoft.skills.Model.RestResponse;
+import it.plansoft.skills.Model.Data.RestResponse;
 import it.plansoft.skills.Service.SkillAreaService;
 import it.plansoft.skills.Service.SkillService;
 

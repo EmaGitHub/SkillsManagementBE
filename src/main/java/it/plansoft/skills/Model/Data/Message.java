@@ -1,4 +1,4 @@
-package it.plansoft.skills.Model;
+package it.plansoft.skills.Model.Data;
 
 public class Message {
 	public static final String code = "";

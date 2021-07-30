@@ -1,4 +1,4 @@
-package it.plansoft.skills.Model;
+package it.plansoft.skills.Model.Data;
 
 public class RestPagingResponse<T> extends RestResponse<T> {
 
