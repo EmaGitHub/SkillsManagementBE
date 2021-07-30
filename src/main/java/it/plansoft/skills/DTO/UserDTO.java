@@ -41,16 +41,15 @@ public class UserDTO extends BaseModel<Long> {
 	)
     private Set<RoleDTO> roles = new HashSet<>();
 	
-//	@Getter @Setter
-//	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(
-//    		name="competence",
-//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id")
-//            )
-//	private Set<CompetenceDTO> competences = new HashSet<>();
+	@Getter @Setter
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name="user_competences",
+	    joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
+	    inverseJoinColumns = {@JoinColumn(name="competence_id", referencedColumnName="id")}
+	)
+    private Set<RoleDTO> competences = new HashSet<>();
 	
-	public void addRole(RoleDTO role) {
-		this.roles.add(role);
-	}
+//	public void addRole(RoleDTO role) {
+//		this.roles.add(role);
+//	}
 }
