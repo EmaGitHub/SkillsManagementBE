@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.plansoft.skills.DTO.SkillAreaDTO;
 import it.plansoft.skills.Repository.Skills.SkillAreaDAOCustom;
+import it.plansoft.skills.Service.Abstraction.BaseCrudService;
 
 @Service
 public class SkillAreaService extends BaseCrudService<JpaRepository<SkillAreaDTO, Integer>, SkillAreaDTO, Integer> {

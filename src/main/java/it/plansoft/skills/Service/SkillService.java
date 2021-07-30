@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import it.plansoft.skills.DTO.SkillDTO;
+import it.plansoft.skills.Service.Abstraction.BaseCrudService;
 
 @Service
 public class SkillService extends BaseCrudService<JpaRepository<SkillDTO, Integer>, SkillDTO, Integer> {

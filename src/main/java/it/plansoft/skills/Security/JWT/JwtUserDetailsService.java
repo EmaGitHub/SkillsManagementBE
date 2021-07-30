@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import it.plansoft.skills.DTO.RoleDTO;
 import it.plansoft.skills.DTO.UserDTO;
 import it.plansoft.skills.Repository.UserDAO;
-import it.plansoft.skills.Repository.UserRolesDAO;
 import it.plansoft.skills.Repository.Roles.RolesDAO;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {

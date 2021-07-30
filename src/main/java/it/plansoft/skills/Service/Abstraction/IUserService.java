@@ -1,4 +1,4 @@
-package it.plansoft.skills.Service;
+package it.plansoft.skills.Service.Abstraction;
 
 import java.util.List;
 

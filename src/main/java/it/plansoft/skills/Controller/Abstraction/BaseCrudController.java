@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.plansoft.skills.Model.BaseModel;
-import it.plansoft.skills.Service.BaseCrudService;
+import it.plansoft.skills.Service.Abstraction.BaseCrudService;
 
 public class BaseCrudController<SERVICE extends BaseCrudService, MODEL extends BaseModel, ID> implements ICrudController<MODEL, ID> {
 	
