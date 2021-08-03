@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import it.plansoft.skills.Model.BaseModel;
@@ -23,12 +24,15 @@ public class UserDTO extends BaseModel<Long> {
 	@Getter @Setter
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
+	
 	@Getter @Setter
 	@Column(name = "password", nullable = false)
 	private String password;
+	
 	@Getter @Setter
 	@Column(name = "first_name", nullable = true)
 	private String firstName;
+	
 	@Getter @Setter
 	@Column(name = "last_name", nullable = true)
 	private String lastName;
@@ -41,15 +45,6 @@ public class UserDTO extends BaseModel<Long> {
 	)
     private Set<RoleDTO> roles = new HashSet<>();
 	
-	@Getter @Setter
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name="user_competences",
-	    joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
-	    inverseJoinColumns = {@JoinColumn(name="competence_id", referencedColumnName="id")}
-	)
-    private Set<RoleDTO> competences = new HashSet<>();
-	
-//	public void addRole(RoleDTO role) {
-//		this.roles.add(role);
-//	}
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<CompetenceDTO> competences = new HashSet<>();
 }

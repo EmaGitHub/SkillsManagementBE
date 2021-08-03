@@ -19,9 +19,11 @@ public class SkillAreaDTO extends BaseModel<Integer> {
 	@Getter @Setter
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
+	
 	@Getter @Setter
 	@Column(name = "description", nullable = true)
 	private String description;	
+	
 	@Getter @Setter
 	@Column(name = "parent_id", nullable = true)
 	private int parentId = -1;

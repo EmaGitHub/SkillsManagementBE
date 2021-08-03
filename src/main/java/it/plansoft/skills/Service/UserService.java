@@ -13,24 +13,4 @@ public class UserService extends BaseCrudService<JpaRepository<UserDTO, Long>, U
 		super(repo);
 	}
 
-//	@Override
-//	public String getRoles(String sso) {
-//		UserDTO user = ((UserDAO)repo).findByUsername(sso);
-//		if (user.getIsSystemAdmin()) {
-//			return "SYSTEM_ADMIN";
-//		}
-//		return "";
-//	}
-//
-//	@Override
-//	public List<GrantedAuthority> getAuthorities(String sso) {
-//		UserDTO user = ((UserDAO)repo).findByUsername(sso);
-//		List<GrantedAuthority> authorities = new ArrayList<>();	
-//		// if System Admin
-//		if (user.getRoles() != null) {
-//			authorities.add(new SimpleGrantedAuthority("ROLE_SYSTEM_ADMIN"));
-//		}
-//		return authorities;
-//	}
-
 }
