@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import it.plansoft.skills.DTO.RoleDTO;
 
 @Repository
-public interface RolesDAO extends JpaRepository<RoleDTO, Long>, RolesDAOCustom {
+public interface RolesDAO extends JpaRepository<RoleDTO, Integer>, RolesDAOCustom {
 
 }	
