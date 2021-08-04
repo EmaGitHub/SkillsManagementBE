@@ -4,10 +4,11 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import it.plansoft.skills.Model.BaseModel;
 import lombok.Getter;
@@ -22,12 +23,8 @@ public class CompetenceDTO extends BaseModel<Long> {
 	@Column(name = "skill_id", nullable = false)
 	@Getter @Setter
 	private int skillId;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
-	private UserDTO user;
-	
-	@Column(name = "level", nullable = false)
+
+	@Column(name = "level", nullable = true)
 	@Getter @Setter
 	private float level;
 	
@@ -46,4 +43,9 @@ public class CompetenceDTO extends BaseModel<Long> {
 	@Column(name = "validation_date", nullable = true)
 	@Getter @Setter
 	private LocalDate validationDate;
+	
+	@Getter @Setter
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id")
+	private UserDTO user;
 }

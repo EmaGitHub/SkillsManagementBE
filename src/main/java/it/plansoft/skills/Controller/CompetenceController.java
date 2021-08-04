@@ -25,4 +25,5 @@ public class CompetenceController extends BaseCrudController<CompetenceService, 
 		super(service);
 	}
 
+
 }

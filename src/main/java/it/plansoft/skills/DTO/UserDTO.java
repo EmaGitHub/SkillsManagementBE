@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import it.plansoft.skills.Model.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +47,9 @@ public class UserDTO extends BaseModel<Long> {
 	)
     private Set<RoleDTO> roles = new HashSet<>();
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@Getter @Setter
+	@JsonBackReference
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CompetenceDTO> competences = new HashSet<>();
+
 }

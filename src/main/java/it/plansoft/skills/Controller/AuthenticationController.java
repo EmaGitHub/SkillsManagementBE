@@ -74,10 +74,11 @@ public class AuthenticationController {
 			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 			final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 			final String token = jwtTokenUtil.generateToken(userDetails);
-			return ResponseEntity.ok(new JwtResponse(authenticationRequest.getUsername(), token, 200));
+			final UserDTO user = userService.findByUsername(authenticationRequest.getUsername());
+			return ResponseEntity.ok(new JwtResponse(user.getUsername(), user.getId(), token, 200));
 		}
 		catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new JwtResponse(null, null, 401));
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new JwtResponse(null, null, null, 401));
 		}
 	}
 	
