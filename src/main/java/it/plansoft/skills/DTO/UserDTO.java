@@ -50,6 +50,6 @@ public class UserDTO extends BaseModel<Long> {
 	@Getter @Setter
 	@JsonBackReference
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CompetenceDTO> competences = new HashSet<>();
+    private Set<SkillDTO> competences = new HashSet<>();
 
 }

@@ -7,10 +7,10 @@ import it.plansoft.skills.DTO.CompetenceDTO;
 import it.plansoft.skills.Service.Abstraction.BaseCrudService;
 
 @Service
-public class CompetenceService extends BaseCrudService<JpaRepository<CompetenceDTO, Long>, CompetenceDTO, Long> {
+public class CompetenceService extends BaseCrudService<JpaRepository<CompetenceDTO, Integer>, CompetenceDTO, Integer> {
 
-	public CompetenceService(JpaRepository<CompetenceDTO, Long> repo) {
+	public CompetenceService(JpaRepository<CompetenceDTO, Integer> repo) {
 		super(repo);
 	}
-
 }
+ 

@@ -3,9 +3,8 @@ package it.plansoft.skills.Repository.Competences;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import it.plansoft.skills.DTO.CompetenceDTO;
+import it.plansoft.skills.DTO.CompetenceAreaDTO;
 
 @Repository
-public interface CompetenceDAO extends JpaRepository<CompetenceDTO, Integer> {
-
+public interface CompetenceAreaDAO extends JpaRepository<CompetenceAreaDTO, Integer>, CompetenceAreaDAOCustom {
 }	

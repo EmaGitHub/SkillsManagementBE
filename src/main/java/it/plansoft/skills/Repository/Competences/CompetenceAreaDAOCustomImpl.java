@@ -1,4 +1,4 @@
-package it.plansoft.skills.Repository.Skills;
+package it.plansoft.skills.Repository.Competences;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-public class SkillAreaDAOCustomImpl implements SkillAreaDAOCustom {
+public class CompetenceAreaDAOCustomImpl implements CompetenceAreaDAOCustom {
 	
-	protected final static Logger log = LoggerFactory.getLogger(SkillAreaDAOCustomImpl.class);
+	protected final static Logger log = LoggerFactory.getLogger(CompetenceAreaDAOCustomImpl.class);
 
     String URL = "jdbc:mysql://localhost:3306/skills";
     String USER = "root";

@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import it.plansoft.skills.DTO.RoleDTO;
-import it.plansoft.skills.Repository.Skills.SkillAreaDAOCustomImpl;
+import it.plansoft.skills.Repository.Competences.CompetenceAreaDAOCustomImpl;
 
 @Repository
 public class RolesDAOCustomImpl implements RolesDAOCustom {
 	
-	protected final static Logger log = LoggerFactory.getLogger(SkillAreaDAOCustomImpl.class);
+	protected final static Logger log = LoggerFactory.getLogger(CompetenceAreaDAOCustomImpl.class);
 
     String URL = "jdbc:mysql://localhost:3306/skills";
     String USER = "root";

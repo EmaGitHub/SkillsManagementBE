@@ -13,8 +13,8 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "skill_area")
-public class SkillAreaDTO extends BaseModel<Integer> {
+@Table(name = "competence_area")
+public class CompetenceAreaDTO extends BaseModel<Integer> {
 	
 	@Getter @Setter
 	@Column(name = "name", nullable = false, unique = true)

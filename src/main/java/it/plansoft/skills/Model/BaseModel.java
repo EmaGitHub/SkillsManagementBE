@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
-import it.plansoft.skills.DTO.SkillDTO;
+import it.plansoft.skills.DTO.CompetenceDTO;
 import it.plansoft.skills.DTO.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @JsonSubTypes(
 {
     @Type(value = UserDTO.class, name = "user"),
-    @Type(value = SkillDTO.class, name = "skill")
+    @Type(value = CompetenceDTO.class, name = "skill")
 })
 public abstract class BaseModel<ID> extends IdModel<ID> {
 	
