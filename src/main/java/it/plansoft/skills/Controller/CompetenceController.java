@@ -81,8 +81,8 @@ public class CompetenceController extends BaseCrudController<CompetenceService, 
 	
 	@DeleteMapping
 	@PreAuthorize("hasAnyAuthority('SYSTEM_ADMIN')")
-	@RequestMapping(path = "/area/{areaID}")
-	public ResponseEntity<?> deleteSkillArea(@PathVariable(value="areaID") int id) throws ClassNotFoundException, SQLException  {
+	@RequestMapping(path = "/area/{areaId}")
+	public ResponseEntity<?> deleteSkillArea(@PathVariable(value="areaId") int id) throws ClassNotFoundException, SQLException  {
 		try {
 			int deletedSkills = skillAreaService.deleteSkillArea(id);
 			return ResponseEntity.ok(deletedSkills);

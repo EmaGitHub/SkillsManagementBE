@@ -26,15 +26,15 @@ public class SkillDTO extends BaseModel<Long> {
 
 	@Column(name = "level", nullable = true)
 	@Getter @Setter
-	private float level;
+	private int level;
 	
 	@Column(name = "self_level", nullable = true)
 	@Getter @Setter
-	private float selfLevel;
+	private int selfLevel;
 	
-	@Column(name = "max_level", nullable = false, columnDefinition = "float default '5.00'")
+	@Column(name = "max_level", nullable = false, columnDefinition = "int default 5")
 	@Getter @Setter
-	private float maxLevel;
+	private int maxLevel;
 	
 	@Column(name = "validation_user_id", nullable = true)
 	@Getter @Setter

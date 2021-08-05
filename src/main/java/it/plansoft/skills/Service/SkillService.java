@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import it.plansoft.skills.DTO.SkillDTO;
+import it.plansoft.skills.Model.Data.UserSkill;
 import it.plansoft.skills.Repository.Skills.SkillDAOCustom;
 import it.plansoft.skills.Service.Abstraction.BaseCrudService;
 
@@ -17,7 +18,7 @@ public class SkillService extends BaseCrudService<JpaRepository<SkillDTO, Long>,
 		super(repo);
 	}
 
-	public List<SkillDTO> getUserSkills(Long userId) throws SQLException {
+	public List<UserSkill> getUserSkills(Long userId) throws SQLException {
 		return ((SkillDAOCustom)repo).getUsersSkills(userId);
 	}
 
