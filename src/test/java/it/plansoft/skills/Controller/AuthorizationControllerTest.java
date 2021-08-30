@@ -47,7 +47,7 @@ public class AuthorizationControllerTest {
 		ResponseEntity<?> response = userController.save(newUser1);
 		String encryptedPass = bcryptEncoder.encode("passwordTestC");
 
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("usernameTestC", encryptedPass));
+//		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("usernameTestC", encryptedPass));
 //		final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername("usernameTestC");
 //		final String token = jwtTokenUtil.generateToken(userDetails);
 		final String token = "a!";

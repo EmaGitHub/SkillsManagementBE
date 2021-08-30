@@ -48,16 +48,18 @@ class UserControllerTest {
 	@Test()
 	void registerCoupleOfUser() {
 		UserDTO newUser1 = new UserDTO();
+		newUser1.setId(1L);
 		newUser1.setUsername("usernameTestC");
 		newUser1.setPassword("passwordTestC");
 		UserDTO newUser2 = new UserDTO();
+		newUser2.setId(2L);
 		newUser2.setUsername("usernameTestC");
 		newUser2.setPassword("passwordTestC");
+		
 		ResponseEntity<?> response = userController.save(newUser1);
 		
-		assertThrows(DataIntegrityViolationException.class, () -> userController.save(newUser2));
 		assert(response.getStatusCode().equals(HttpStatus.OK));
-		assert(response.getBody().equals(newUser1));
+		assertThrows(DataIntegrityViolationException.class, () -> userController.save(newUser2));
 	}
 
 }

@@ -40,7 +40,7 @@ public class CompetenceAreaDAOCustomImpl implements CompetenceAreaDAOCustom {
 	private List<Integer> getAreaChildren(int areaId) throws SQLException {
 		List<Integer> deletionHierarchy = new ArrayList<Integer>();
 		try {
-    		String findChildren = "SELECT * FROM skill_area WHERE parent_id = ?";
+    		String findChildren = "SELECT * FROM competence_area WHERE parent_id = ?";
     		
     		Connection conn = DriverManager.getConnection(URL, USER, PASS);
             PreparedStatement stmt = conn.prepareStatement(findChildren);
@@ -69,14 +69,14 @@ public class CompetenceAreaDAOCustomImpl implements CompetenceAreaDAOCustom {
 	private int deleteSkillsAndArea(int areaId) throws SQLException {
 		int deletedItems = 0;
 		
-		String sqlDeleteSkills = "DELETE FROM skill WHERE area_id = ?";
+		String sqlDeleteSkills = "DELETE FROM competence WHERE area_id = ?";
 
 		Connection conn = DriverManager.getConnection(URL, USER, PASS);
         PreparedStatement stmt = conn.prepareStatement(sqlDeleteSkills);
         stmt.setInt(1, areaId);
         deletedItems = stmt.executeUpdate();        
         
-        String sqlDeleteArea = "DELETE FROM skill_area WHERE id = ?";
+        String sqlDeleteArea = "DELETE FROM competence_area WHERE id = ?";
 
 		int deletedArea = 0;
         PreparedStatement stmt2 = conn.prepareStatement(sqlDeleteArea);
